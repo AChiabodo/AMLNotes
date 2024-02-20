@@ -94,18 +94,45 @@
 3. **Maximum Likelihood Estimation (MLE)**
       - MLE seeks to find the value of a parameter that maximizes the likelihood of the observed data, assuming a particular probability distribution. For large amounts of data, we can approximate MAP by MLE and use it to approximate our parameters.
 ## Lesson 3
+1. **Loss Functions**
+      - We define the loss $L(h(X),Y)$ of the classifier $h(X)$ the function that measures the error between the assigned predictions and the true labels $Y$.
+1. **True Risk**
+      - The True Risk of a classifier $h$ is the probability that it does not predict the correct label for a given input $X$, drawn from the distribution $D$.
+      $$R_D(h) = P(h(X) \neq Y)$$
+      - We can also see the True Risk of a classifier as the **Expected Value** of the loss function over the distribution of the data.
 1. **Bayes Risk vs Empirical Risk**
-      - Bayes risk is the expected loss of a decision rule under the true distribution of the data. It is the best possible performance that can be achieved for a given problem.
-      - Empirical risk is the average loss of a decision rule over the training data. It is used to estimate the Bayes risk and to train machine learning models.
+      - **Bayes risk** is the expected loss (True Risk) of a bayes classifier over the current distribution of the data. It is the best possible performance that can be achieved for a given problem and cannot be improved.
+      - **Empirical risk** $R_D(h)$ over the distribution $D$ is the average loss of the classifier over the training data. It is an estimate of the True Risk. It's impossible to obtain $R_D(h) = 0$ even with a Bayes Classifier. The predictions of any model are only approximately correct, so we'll allow our model to fail with a probability $\delta \in (0,1)$. 
 2. **PAC Learnability**
-!TODO!
-      - An Hypothesis Class $H$ is PAC-learnable if there exists a function $m_H$ that, given enough samples, produces (with a certain probability) an hypothesis that can achieve a true risk $R_D.
+      - An Hypothesis Class $H$ is PAC-learnable if there exists a function $m_H$ that, given enough samples, produces (with a certain probability) an hypothesis that can achieve a true risk $R_D(h) \leq \epsilon$.
+      - Directly from the definition of Empirical Risk, we can see that a model is PAC-learnable if the empirical risk is close to the true risk ($R_D(h) \leq \epsilon$) with a certain probability $(1 - \delta)$. So our model should be Probably (with probability $1-\delta$) Approximately (with error $\epsilon$) Correct.
+      - The number of samples $m_H$ needed to achieve this is called the **sample complexity of the model**.
 3. **Overfitting and Underfitting**
       - Overfitting is a phenomenon that occurs when a model is **too complex** or flexible and fits the training data too closely (including noise), resulting in poor performance on unseen data (test data) due to the model's inability to generalize.
       - Underfitting is a phenomenon that occurs when a model is **too simple** to capture the underlying patterns in the data. As a result it performs poorly on both the training and unseen data.
 4. **K-Fold Cross Validation**
       - K-Fold Cross Validation is a technique used to evaluate the performance of a machine learning model. The training data is divided into K subsets, and the model is trained K times, each time using K-1 subsets for training and the remaining subset for validation. The performance of the model is then averaged over the K runs. If K is equal to the number of samples, it is called Leave-One-Out Cross Validation.
-5. **Linear Regression**
+1. **Linear Regression Algorithms**
 
-6. **Logistic Regression**
+Regression algorithms are used to predict a **continuous** output variable based on the input features. In classification $Y = {1,2,3,...,K}$, in regression $Y \in \mathbb{R}$.
+ - **Loss Functions** for regression are typically based on the difference between the predicted value and the true value. A common loss function is the Mean Squared Error (MSE) $L(y,y) = (y-y)^2$.
+- **Linear Regression** is a simple and commonly used regression algorithm that models the relationship between the input features and the output variable as a linear function.
+- **Ridge Regression** is a variation of linear regression that adds a regularization term to the cost function, to prevent overfitting.
+
 ## Lesson 4
+1. **Logistic Regression** is a non-linear regression algorithm that is used for binary classification. It models the probability that an input belongs to a particular class using the logistic function. The loss function is :
+$$l({x_i,y_i}) = \sum_{i=1}^n(y_i-\sigma(ax_i+b))^2$$ 
+We can rewrite the loss function to have a convex problem as :
+$$l({x_i,y_i}) = \sum_{i=1}^ny_i\ln(\sigma(ax_i+b)) + (1-y_i\ln(1-\sigma(ax_i+b)))$$
+But that function still has no analytical solution, so we use the **Gradient Descent** algorithm to minimize the loss function.
+
+2. **Gradient Descent** is an optimization algorithm used to minimize a loss function by **iteratively updating** the parameters of the model in the direction of the negative gradient of the loss function $x^{(t+1)} = x^{(t)} - \alpha \nabla f(x^{(t)})$ and is orthogonal to level surfaces. It requires that the function $f$ is **differentiable** at all points. 
+- **Stationary point** is a point where  $\alpha \nabla f(x^{(t)}) = 0$ so the algorithm "remain stuck" at that point. We have no guarantee that the point is a minimum, it could be a saddle point for example.
+ - The **Learning Rate** $\alpha$ is a hyperparameter that controls the size of the updates. If the learning rate is too small, the algorithm may take a long time to converge, while if it is too large, the algorithm may oscillate or diverge. The size of the step is given by $\alpha ||\nabla f||$. The learning rate can be fixed, adaptive or follow a schedule. 
+   - *decay* is a technique used to reduce the learning rate over time, which can help the algorithm to converge more effectively.
+   - *momentum* is a technique used to accelerate the convergence of the algorithm by adding a fraction of the previous update to the current update. 
+
+3. **Stochastic Gradient Descent (SGD)** is a variant of gradient descent that updates the parameters of the model using a **single batch of data** $B$ at a time, rather than the entire training set. This can lead to faster convergence, but it can also be more noisy and may require more iterations to converge. Small batches can also offer a regularization effect.
+
+## Lesson 6
+1. **The perceptron** is a simple algorithm loosely inspired by the way neurons work in the brain. It is used for binary classification and is based on a linear threshold function.
