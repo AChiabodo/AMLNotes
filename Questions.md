@@ -5,7 +5,6 @@
 2. **Transfer Learning and Fine Tuning**
    - Transfer learning is a technique where a pre-trained model is used as a starting point for a new task, rather than training a model from scratch. This can save time and resources, and also improve performance. With Transfer Learning, the weights of the pre-trained model are frozen, and only the weights of the last layer are trained on the new task. Fine-tuning is a similar technique where the weights of the pre-trained model (more layers) are updated for the new task, typically by using a smaller learning rate.
 3. **Vae vs GAN**
-   
    VAE (Variational Autoencoder) and GAN (Generative Adversarial Network) are both generative models, but they work differently. VAE is a probabilistic model that aims to learn a latent representation of the data, while GANs are trained to generate new data by pitting a generator network against a discriminator network. Specifically :
       - VAEs use deep learning techniques to learn a latent representation ($z$) of input data ($x$) and are based on **AutoEncoders**, which are neural networks designed to learn a compressed representation of the input data, but with VAEs the representation is **probabilistic** rather than deterministic.
       - GANs are based on two neural networks playing a "MiniMax" game. The **Generator** creates new data samples with the intention of fooling the discriminator, while the discriminator tries to distinguish between the generated samples and real samples. There are no explicit likelihood distributions in GANs. Instead of minimizing the probability that the discriminator is right (gradient descent), we can maximize the probability that the discriminator is wrong (gradient ascent). The gradient works much better this way.
@@ -66,8 +65,6 @@
       - RevGrad is a technique used to adapt a model trained on one domain to another domain. It works by reversing the gradient of the domain classifier and using it to update the model's parameters.
 31. **ADDA**
       - ADDA (Adversarial Discriminative Domain Adaptation) is a method for unsupervised domain adaptation, it is an extension of GANs, where the generator network is trained to generate samples from the target domain, and the discriminator network is trained to distinguish between samples from the source and target domains.
-32. **PAC learning**
-      - PAC learning is a theoretical framework for understanding the sample complexity of machine learning algorithms. It provides bounds on the number of samples needed to achieve a certain level of accuracy.
 33. **cycle GAN**
       - Cycle GAN is a type of GAN that is able to translate images from one domain to another, it is trained by using cycle consistency loss which trains the model to maintain the same content and style of the input image after translation.
 34. **SBADA-GAN**
@@ -88,3 +85,22 @@
       - A self-attention layer is a type of attention mechanism that is applied to the input data within a single layer of a neural network. This allows the model to learn to attend to different parts of the input data within the same layer, rather than having to pass the data through multiple layers.
 42. **transformer**
       - Transformer is a type of neural network architecture that is particularly well suited for tasks that involve sequential data such as natural language processing. It uses self-attention mechanisms to allow the model to selectively focus on different parts of the input data, which allows it to learn to handle longer sequences of data and make more accurate predictions.
+
+
+# AML questions Ordered By Lesson
+
+## Lesson 2
+1. **Generative vs Discriminative Learning**
+      - Generative learning models learn the joint probability distribution $P(Y,X)$ of both the input features $X$ and the output $Y$. They can be used to generate new samples from the input distribution.
+      - Discriminative learning models learn the conditional probability distribution $P(Y|X)$ of the output $Y$ given the input features $X$. They directly learn how likely a given input is to belong to a particular output class.
+2. **Maximum A Posteriori (MAP) Estimation**
+      - MAP seeks to find the value of a parameter that maximizes the posterior probability distribution, taking into account both the likelihood of the data and the prior distribution.
+3. **Maximum Likelihood Estimation (MLE)**
+      - MLE seeks to find the value of a parameter that maximizes the likelihood of the observed data, assuming a particular probability distribution. For large amounts of data, we can approximate MAP by MLE and use it to approximate our parameters.
+## Lesson 3
+1. **Bayes Risk vs Empirical Risk**
+      - Bayes risk is the expected loss of a decision rule under the true distribution of the data. It is the best possible performance that can be achieved for a given problem.
+      - Empirical risk is the average loss of a decision rule over the training data. It is used to estimate the Bayes risk and to train machine learning models.
+2. **PAC learning**
+      - PAC learning is a theoretical framework for understanding the sample complexity of machine learning algorithms. It provides bounds on the number of samples needed to achieve a certain level of accuracy.
+2
