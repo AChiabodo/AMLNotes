@@ -35,14 +35,10 @@
       - Multitask learning is a technique where a model is trained to perform multiple tasks simultaneously, while transfer learning is a technique where a pre-trained model is fine-tuned for a new task.
 16. **Regression vs classification**
       - Regression is a type of supervised learning where the goal is to predict a continuous output variable, while classification is a type of supervised learning where the goal is to predict a discrete output variable.
-17. **Linear regression vs logistic regression**
-      - Linear regression is a simple algorithm used for regression problems, while logistic regression is an algorithm used for classification problems.
 18. **Batch normalization and its use for domain adaptation**
       - Batch normalization can be used for domain adaptation by normalizing the activations of a pre-trained model to match the distribution of the new dataset.
 19. **how to choose hyperparameters**
       - Hyperparameters can be chosen through methods such as grid search, random search, or Bayesian optimization.
-20. **What is overfitting**
-      - Overfitting is a phenomenon that occurs when a model is trained too well on the training data, and as a result, it performs poorly on unseen data. This happens when the model is too complex and has too many parameters, and it ends up memorizing the training data instead of generalizing to new data.
 21. **Why we initialize the weights in cnn**
       - In CNN, we initialize the weights to small random values to break symmetry and avoid zero gradients. This allows the network to learn different features in different layers.
 22. **Layer freezing**
@@ -101,6 +97,15 @@
 1. **Bayes Risk vs Empirical Risk**
       - Bayes risk is the expected loss of a decision rule under the true distribution of the data. It is the best possible performance that can be achieved for a given problem.
       - Empirical risk is the average loss of a decision rule over the training data. It is used to estimate the Bayes risk and to train machine learning models.
-2. **PAC learning**
-      - PAC learning is a theoretical framework for understanding the sample complexity of machine learning algorithms. It provides bounds on the number of samples needed to achieve a certain level of accuracy.
-2
+2. **PAC Learnability**
+!TODO!
+      - An Hypothesis Class $H$ is PAC-learnable if there exists a function $m_H$ that, given enough samples, produces (with a certain probability) an hypothesis that can achieve a true risk $R_D.
+3. **Overfitting and Underfitting**
+      - Overfitting is a phenomenon that occurs when a model is **too complex** or flexible and fits the training data too closely (including noise), resulting in poor performance on unseen data (test data) due to the model's inability to generalize.
+      - Underfitting is a phenomenon that occurs when a model is **too simple** to capture the underlying patterns in the data. As a result it performs poorly on both the training and unseen data.
+4. **K-Fold Cross Validation**
+      - K-Fold Cross Validation is a technique used to evaluate the performance of a machine learning model. The training data is divided into K subsets, and the model is trained K times, each time using K-1 subsets for training and the remaining subset for validation. The performance of the model is then averaged over the K runs. If K is equal to the number of samples, it is called Leave-One-Out Cross Validation.
+5. **Linear Regression**
+
+6. **Logistic Regression**
+## Lesson 4
