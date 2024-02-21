@@ -41,11 +41,11 @@ $$l({x_i,y_i}) = \sum_{i=1}^ny_i\ln(\sigma(ax_i+b)) + (1-y_i\ln(1-\sigma(ax_i+b)
 But that function still has no analytical solution, so we use the **Gradient Descent** algorithm to minimize the loss function.
 
 2. **Gradient Descent** is a first-order algorithm used to minimize a loss function by **iteratively updating** the parameters of the model in the direction of the negative gradient of the loss function : $x^{(t+1)} = x^{(t)} - \alpha \nabla f(x^{(t)})$ and is orthogonal to level surfaces. It requires that the function $f$ is **differentiable** at all points. 
-- **Stationary point** is a point where  $\alpha \nabla f(x^{(t)}) = 0$ so the algorithm "remain stuck" at that point. We have no guarantee that the point is a minimum, it could be a saddle point for example. On the other hand in DL we're not interested in the global minimum because it would cause overfitting.
- - The **Learning Rate** $\alpha$ is a hyperparameter that controls the size of the updates. If the learning rate is too small, the algorithm may take a long time to converge, while if it is too large, the algorithm may oscillate or diverge. The size of the step is given by $\alpha ||\nabla f||$. The learning rate can be fixed, adaptive or follow a schedule. 
-   - *decay* is a technique used to reduce the learning rate over time, which can help the algorithm to converge more effectively.
-   - *momentum* is a technique used to accelerate the convergence of the algorithm by adding a fraction of the previous update to the current update. 
-- Two major bottlenecks of the algorithm make it unsuitable for Deep Learning: the number of samples (we're computing the gradient over the entire dataset) and the number of parameters (milions of parameter!).
+      - **Stationary point** is a point where  $\alpha \nabla f(x^{(t)}) = 0$ so the algorithm "remain stuck" at that point. We have no guarantee that the point is a minimum, it could be a saddle point for example. On the other hand in DL we're not interested in the global minimum because it would cause overfitting.
+      - The **Learning Rate** $\alpha$ is a hyperparameter that controls the size of the updates. If the learning rate is too small, the algorithm may take a long time to converge, while if it is too large, the algorithm may oscillate or diverge. The size of the step is given by $\alpha ||\nabla f||$. The learning rate can be fixed, adaptive or follow a schedule. 
+      - *decay* is a technique used to reduce the learning rate over time, which can help the algorithm to converge more effectively.
+      - *momentum* is a technique used to accelerate the convergence of the algorithm by adding a fraction of the previous update to the current update. 
+      - Two major bottlenecks of the algorithm make it unsuitable for Deep Learning: the number of samples (we're computing the gradient over the entire dataset) and the number of parameters (milions of parameter!).
 
 3. **Stochastic Gradient Descent (SGD)** is a variant of gradient descent that updates the parameters of the model using a **single batch of data** $B$ at a time, rather than the entire training set. This can lead to faster convergence, but it can also be more noisy and may require more iterations to converge. Small batches can also offer a regularization effect. Compared to GD, SGD can find low value of the loss quickly enough to be useful in DL, even if most of the time it's not the minimum.
 
@@ -168,12 +168,14 @@ The best choice of activation function remains the ReLU function, using a Leaky 
 </tr>
 </table>
 
-1. **attention**
-      - Attention is a mechanism used in neural networks to selectively focus on certain parts of the input when making a prediction. This allows the model to attend to the most relevant information in the input, and is particularly useful in tasks such as image and text understanding.
-1. **self attention layer**
-      - A self-attention layer is a type of attention mechanism that is applied to the input data within a single layer of a neural network. This allows the model to learn to attend to different parts of the input data within the same layer, rather than having to pass the data through multiple layers.
+1. **Attention** is a mechanism used in neural networks to selectively focus on certain parts of the input when making a prediction. This allows the model to attend to the most relevant information in the input, and is particularly useful in tasks such as image and text understanding.
+1. **Self Attention Layer** is a type of attention mechanism that is applied to the input data within a single layer of a neural network. This allows the model to learn to attend to different parts of the input data within the same layer, rather than having to pass the data through multiple layers.
 
-1. **Sequence-to-Sequence with RNN and Attention**
+1. **RNN with Attention** consists of an **encoder** that processes the input sequence and produces a sequence of hidden states.
+      1. The last hidden state $s_0$ is combined with each hidden state through a Fully Connected Layer (MLP) to compute the **alignment scores** $e_{t,i} = f_{att}(s_{t-1},h_i)$. 
+      1. The alignment scores are then passed through a **softmax** function to obtain the **attention weights** $a_{t,i}$. 
+      1. The attention weights are then used to compute the **context vector** by taking a weighted sum of the hidden states. $c_t = \sum_i a_{t,i}h_i$
+1. **Advantages of RNN with Attention** are that the whole network is differentiable, so it can be easily trained with backpropagation, and that the attention mechanism allows the model to focus on the most relevant parts of the input data. Note that at each time step the context vector is different, so the model can focus on different parts of the input at different time steps.
 
 ## Lesson 13
 
