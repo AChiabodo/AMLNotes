@@ -136,7 +136,16 @@ The best choice of activation function remains the ReLU function, using a Leaky 
    - RoI Pooling is a technique used in object detection algorithms to extract features from a region of interest (RoI) in an image. It works by dividing the RoI into a grid of sub-windows and then "snapping" the features to the grid. This can lead to a loss of information and reduce the accuracy of the object detection algorithm.
    - RoI Align is a variation of RoI pooling that uses **bilinear interpolation** to align the features with the grid. This can help to preserve the spatial information and improve the accuracy of the object detection algorithm.
 
-5. **Semantic Segmentation** is the task of classifying each pixel in an image according to the object it belongs to. It is a pixel-level classification task that can be used to create detailed and accurate object masks.
+5. **Semantic Segmentation** is the task of classifying each pixel in an image according to the object it belongs to. It is a pixel-level classification task that can be used to create detailed and accurate object masks. Various techniques can be used for semantic segmentation, such as fully convolutional networks and U-Net.
+
+1. **Fully Convolutional Networks (FCNs)** are used to perform semantic segmentation by applying **Downsampling** and **Upsampling** inside the network.
+First a series of convolutional layers are applied to the input image to extract the **features vector**. The network is then designed to upsample the feature vector and the obtained output is a **pixel-wise** classification with original image size $C$ x $H$ x $W$ where $C$ is the number of classes. 
+      - **Downsampling** is performed by applying a series of convolutional layers alternated to Pooling layers. The convolutional layers are used to extract the features from the input image, while the pooling layers are used to reduce the spatial dimensions of the feature map.
+      - **Upsampling** is performed by applying "Unpooling" layers like Bilinear Interpolation, Max Unpooling etc. No learning is involved in this types of layers. An alternative is the **Transposed Convolution** that is a learnable layer that can be used to upsample the feature map.
+
+1. **Instance Segmentation** is the task of identifying and localizing each object instance in an image. It is a combination of object detection and semantic segmentation, and can be used to create detailed and accurate object masks for each object in an image. Can be performed with a **Mask R-CNN** that extends the Faster R-CNN by adding a new task after RoI pooling : **Mask Prediction**.
+
+1. **Panoptic Segmentation** is the task of simultaneously performing semantic segmentation and instance segmentation on an image. It can be used to create detailed and accurate object masks for each object in an image, as well as to classify each pixel according to the object it belongs to.
 
 ## Lesson 12
 
@@ -168,7 +177,7 @@ The best choice of activation function remains the ReLU function, using a Leaky 
 </tr>
 </table>
 
-1. **Attention** is a mechanism used in neural networks to selectively focus on certain parts of the input when making a prediction. This allows the model to attend to the most relevant information in the input, and is particularly useful in tasks such as image and text understanding.
+6. **Attention** is a mechanism used in neural networks to selectively focus on certain parts of the input when making a prediction. This allows the model to attend to the most relevant information in the input, and is particularly useful in tasks such as image and text understanding.
 1. **Self Attention Layer** is a type of attention mechanism that is applied to the input data within a single layer of a neural network. This allows the model to learn to attend to different parts of the input data within the same layer, rather than having to pass the data through multiple layers.
 
 1. **RNN with Attention** consists of an **encoder** that processes the input sequence and produces a sequence of hidden states.
