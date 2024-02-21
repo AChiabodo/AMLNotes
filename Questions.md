@@ -232,7 +232,17 @@ The best choice of activation function remains the ReLU function, using a Leaky 
       - **Vanishing Gradient** : If the largest singular value of the weight matrix is less than 1, the gradient will vanish over time.  Can be solved only by changing the architecture of the network.
       - **Exploding gradient** : If the largest singular value is greater than 1, the gradient will explode over time. Can be solved with **gradient clipping**.
 
-5. **Long Short-Term Memory (LSTM) Networks** 
+5. **Long Short-Term Memory (LSTM) Networks** are an extension of vanilla RNNs used to solve the vanishing gradient problem. In LSTM (other than input and state) we have also a **cell state** that won't be exposed to the outside world. Solves the vanishing gradient problem because now we have two possible paths for the gradient to flow (the cell state and the hidden state) obtaining in this way an uninterrupted gradient flow. 
+      - $c_t = f * c_{t-1} + i * g$ : The cell state is updated by a combination of the old cell state and the new input. $f$ is the forget gate, $i$ is the input gate and $g$ is the "write" gate.
+      - $h_t = o * tanh(c_t)$ : The hidden state is updated by the cell state and the output gate. $o$ is the output gate.
+<table>
+<tr>
+<td><img src="images/LSTM_cell.png" width="100%" class="float-left" height="220px">
+</td>
+<td><img src="images/LSTM_form.png" width="100%" class="float-left" height="220px">
+</td>
+</tr>
+</table>
 
 ## Lesson 13
 1. **Supervised Learning** : Based on the use of labelled data, the goal is to learn a function that maps the input to the output labels. Classification, regression and semantic segmentation are examples of supervised learning. In some cases is really costly to obtain labelled data and errors in the labelling can lead to poor performance and noise.
