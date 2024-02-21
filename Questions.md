@@ -216,6 +216,24 @@ The best choice of activation function remains the ReLU function, using a Leaky 
 
 ## Lesson 12
 
+1. **Sequential Data** are informations that are not related to a single instant, but are extended in time. Examples can be Music, Text, Stock Exchange, Weather, etc. 
+
+2. **Different Tipes of Networks**
+      - **One-to-One** : "vanilla" networks, takes a single input and produces a single output.
+      - **One-to-Many** : Takes a single input and produces multiple outputs. An example can be Image Captioning, where the network takes a single image in input and produces multiple words.
+      - **Many-to-One** : Takes multiple inputs and produces a single output. An example can be Sentiment Analysis, where the network takes multiple words in input and produces a single sentiment.
+      - **Many-to-Many** : Takes multiple inputs and produces multiple outputs. An example can be Machine Translation, where the network takes multiple words in input and produces multiple words in output.
+
+3. **(vanilla) Recurrent Neural Networks (RNNs)** are a type of neural networks that have an **internal state** that is updated as a sequence is processed. The new state of the network is given by both the old state and the input. In "vanilla" RNNs we have a **single set of weights** that is used at every time step, so the same parameters must work with all the elements.
+      - **Backpropagation Through Time (BPTT)** is a technique used to train RNNs by unrolling the **whole network** through time and applying backpropagation to update the weights. The main problem is the vanishing gradient problem, that can make the training of the network really slow and unstable for bigger texts.
+      - **Truncated BPTT** is a variation of BPTT where the text is truncated into parts (chunks) and the weights are updated at the end of each chunk. This can help to reduce the computational cost of training the network.
+
+4. **(vanilla) RNNs problems** are related to the use of a single weight matrix for all the time steps. The main problems are :
+      - **Vanishing Gradient** : If the largest singular value of the weight matrix is less than 1, the gradient will vanish over time.  Can be solved only by changing the architecture of the network.
+      - **Exploding gradient** : If the largest singular value is greater than 1, the gradient will explode over time. Can be solved with **gradient clipping**.
+
+5. **Long Short-Term Memory (LSTM) Networks** 
+
 ## Lesson 13
 1. **Supervised Learning** : Based on the use of labelled data, the goal is to learn a function that maps the input to the output labels. Classification, regression and semantic segmentation are examples of supervised learning. In some cases is really costly to obtain labelled data and errors in the labelling can lead to poor performance and noise.
 
