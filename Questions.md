@@ -1,18 +1,27 @@
 # AML questions
+## Lesson 1
+1. **Bayes Rule** : Given by the formula $P(A|B) = \frac{P(B|A)}{P(B)}P(A)$ where $P(A|B)$ is the probability of event A given that event B has occurred, $P(B|A)$ is the probability of event B given that event A has occurred, $P(A)$ is the prior probability of event A, and $P(B)$ is the prior probability of event B.
+      - We can always rewrite a joint distribution over two variables as a conditional distribution : $P(A,B) = P(A|B)P(B) = P(B|A)P(A)$
+      - From the Bayes rule we obtain that $P(A|B) \propto P(B|A)P(A)$
+1. **Naive Bayes Assumption** : Given that $P(A|B)P(B)$ is the main term of the Bayes rule, note that estimating $P(B)$ is easy, but estimating $P(A|B)$ is hard. To make it easier we can assume that **attributes are indipendent** given the class, so we can write that $P(A|B) = \prod_{i=1}^{n}P(B_i|A)$.
+1. **Naive Bayes classifier** is a probabilistic classifier that is based on the (Naive) Bayes rule and the assumption that the features are conditionally independent given the class. 
+
 ## Lesson 2
 1. **Generative vs Discriminative Learning**
-      - Generative learning models learn the joint probability distribution $P(Y,X)$ of both the input features $X$ and the output $Y$. They can be used to generate new samples from the input distribution.
-      - Discriminative learning models learn the conditional probability distribution $P(Y|X)$ of the output $Y$ given the input features $X$. They directly learn how likely a given input is to belong to a particular output class.
-2. **Maximum A Posteriori (MAP) Estimation**
-      - MAP seeks to find the value of a parameter that maximizes the posterior probability distribution, taking into account both the likelihood of the data and the prior distribution.
-3. **Maximum Likelihood Estimation (MLE)**
-      - MLE seeks to find the value of a parameter that maximizes the likelihood of the observed data, assuming a particular probability distribution. For large amounts of data, we can approximate MAP by MLE and use it to approximate our parameters.
+      - **Generative learning** aims to learn the joint probability distribution $P(Y,X) = P(X|Y)P(Y)$ of both the input features $X$ and the output $Y$ and then infer $P(Y|X)$ from those. They can be used to generate new samples from the input distribution.
+      - **Discriminative learning** aims to directly estimate the conditional probability distribution $P(Y|X)$ of the output $Y$ given the input features $X$. They directly learn how likely a given input is to belong to a particular output class. Good when is hard to model the underlying distribution of the data (images etc..).
+
+1. **Bayesian learning**: calculates the probability of each hypothesis and, given the data, makes predictions on that basis.
+
+2. **Maximum A Posteriori (MAP) Estimation** seeks to find the value of a parameter that maximizes the posterior probability distribution, taking into account both the likelihood of the data and the prior distribution.
+
+3. **Maximum Likelihood Estimation (MLE)** seeks to find the value of a parameter $\theta$ that maximizes the likelihood of the observed data, assuming a particular probability distribution. For large amounts of data, we can approximate MAP by MLE and use it to approximate our parameters.
+
 ## Lesson 3
-1. **Loss Functions**
-      - We define the loss $L(h(X),Y)$ of the classifier $h(X)$ the function that measures the error between the assigned predictions and the true labels $Y$.
-1. **True Risk**
-      - The True Risk of a classifier $h$ is the probability that it does not predict the correct label for a given input $X$, drawn from the distribution $D$.
-      $$R_D(h) = P(h(X) \neq Y)$$
+1. **Loss Functions** : We define the loss $L(h(X),Y)$ of the classifier $h(X)$ the function that measures the error between the assigned predictions and the true labels $Y$. Various types of loss exists like:
+      - **Adversarial Loss** : Used in GANs, aims to minimize the difference between the generated distribution and the true distribution by maximizing the probability that the domain discriminator confounds the two domains. 
+      - **Cross-Entropy Loss** : Used in classification problems, it measures the difference between two probability distributions. $ L = \frac{1}{N} \sum_{i=1}^{N} y_i \log(\hat{y}_i) $ where $y_i$ is the true distribution of the i-th sample and $\hat{y_i}$ the predicted distribution.
+1. **True Risk** of a classifier $h$ is the probability that it does not predict the correct label for a given input $X$, drawn from the distribution $D$ given by $R_D(h) = P(h(X) \neq Y)$
       - We can also see the True Risk of a classifier as the **Expected Value** of the loss function over the distribution of the data.
 1. **Bayes Risk vs Empirical Risk**
       - **Bayes risk** is the expected loss (True Risk) of a bayes classifier over the current distribution of the data. It is the best possible performance that can be achieved for a given problem and cannot be improved.
@@ -22,16 +31,14 @@
       - Directly from the definition of Empirical Risk, we can see that a model is PAC-learnable if the empirical risk is close to the true risk ($R_D(h) \leq \epsilon$) with a certain probability $(1 - \delta)$. So our model should be Probably (with probability $1-\delta$) Approximately (with error $\epsilon$) Correct.
       - The number of samples $m_H$ needed to achieve this is called the **sample complexity of the model**.
 3. **Overfitting and Underfitting**
-      - Overfitting is a phenomenon that occurs when a model is **too complex** or flexible and fits the training data too closely (including noise), resulting in poor performance on unseen data (test data) due to the model's inability to generalize.
-      - Underfitting is a phenomenon that occurs when a model is **too simple** to capture the underlying patterns in the data. As a result it performs poorly on both the training and unseen data.
+      - **Overfitting** is a phenomenon that occurs when a model is **too complex** or flexible and fits the training data too closely (including noise), resulting in poor performance on unseen data (test data) due to the model's inability to generalize.
+      - **Underfitting** is a phenomenon that occurs when a model is **too simple** to capture the underlying patterns in the data. As a result it performs poorly on both the training and unseen data.
 4. **K-Fold Cross Validation**
       - K-Fold Cross Validation is a technique used to evaluate the performance of a machine learning model. The training data is divided into K subsets, and the model is trained K times, each time using K-1 subsets for training and the remaining subset for validation. The performance of the model is then averaged over the K runs. If K is equal to the number of samples, it is called Leave-One-Out Cross Validation.
-1. **Linear Regression Algorithms**
-
-Regression algorithms are used to predict a **continuous** output variable based on the input features. In classification $Y = {1,2,3,...,K}$, in regression $Y \in \mathbb{R}$.
- - **Loss Functions** for regression are typically based on the difference between the predicted value and the true value. A common loss function is the Mean Squared Error (MSE) $L(y,y) = (y-y)^2$.
-- **Linear Regression** is a simple and commonly used regression algorithm that models the relationship between the input features and the output variable as a linear function.
-- **Ridge Regression** is a variation of linear regression that adds a regularization term to the cost function, to prevent overfitting.
+1. **Linear Regression Algorithms** are used to predict a **continuous** output variable based on the input features. In classification $Y = {1,2,3,...,K}$, in regression $Y \in \mathbb{R}$.
+      - **Loss Functions** for regression are typically based on the difference between the predicted value and the true value. A common loss function is the Mean Squared Error (MSE) $L(y,\hat{y}) = (y-\hat{y})^2$.
+      - **Linear Regression** is a simple and commonly used regression algorithm that models the relationship between the input features and the output variable as a linear function.
+      - **Ridge Regression** is a variation of linear regression that adds a regularization term to the cost function, to prevent overfitting.
 
 ## Lesson 4
 1. **Logistic Regression** is a non-linear regression algorithm that is used for binary classification. It models the probability that an input belongs to a particular class using the logistic function. The loss function is :
