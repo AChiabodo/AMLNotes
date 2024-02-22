@@ -25,16 +25,18 @@
       - We can also see the True Risk of a classifier as the **Expected Value** of the loss function over the distribution of the data.
 1. **Bayes Risk vs Empirical Risk**
       - **Bayes risk** is the expected loss (True Risk) of a bayes classifier over the current distribution of the data. It is the best possible performance that can be achieved for a given problem and cannot be improved.
-      - **Empirical risk** $R_D(h)$ over the distribution $D$ is the average loss of the classifier over the training data. It is an estimate of the True Risk. It's impossible to obtain $R_D(h) = 0$ even with a Bayes Classifier. The predictions of any model are only approximately correct, so we'll allow our model to fail with a probability $\delta \in (0,1)$. 
-2. **PAC Learnability**
-      - An Hypothesis Class $H$ is PAC-learnable if there exists a function $m_H$ that, given enough samples, produces (with a certain probability) an hypothesis that can achieve a true risk $R_D(h) \leq \epsilon$.
-      - Directly from the definition of Empirical Risk, we can see that a model is PAC-learnable if the empirical risk is close to the true risk ($R_D(h) \leq \epsilon$) with a certain probability $(1 - \delta)$. So our model should be Probably (with probability $1-\delta$) Approximately (with error $\epsilon$) Correct.
-      - The number of samples $m_H$ needed to achieve this is called the **sample complexity of the model**.
+      - **Empirical risk** $R_D(h)$ over the distribution $D$ is the average loss of the classifier over the training data. It is an estimate of the True Risk. It's impossible to obtain $R_D(h) = 0$ even with a Bayes Classifier. The predictions of any model are only approximately correct, so we'll allow our model to fail with a probability $\delta \in (0,1)$. $R(h) = \frac{1}{m}\sum_{i=1}{m}$
+      - **Empirical Risk Minimization** 
+2. **PAC Learnability**:  An Hypothesis Class $H$ is PAC-learnable if there exists a function $m_H$ that, given enough samples, produces (with a certain probability $1-\delta$) an hypothesis that can achieve a true risk $R_D(h) \leq \epsilon$.
+      - Directly from the definition of Empirical Risk, we can see that a model is PAC-learnable if, given enough samples, the empirical risk is close to the true risk ($R_D(h) \leq \epsilon$) with a certain probability $(1 - \delta)$. So our model should be Probably (with probability $1-\delta$) Approximately (with error $\epsilon$) Correct.
+      - The number of samples $m_H$ needed to achieve this over $H$ is called the **sample complexity** of the hypothesis class $H$, note that also depends on $\ln(|H|)$ and $H$ itself could be infinite. 
+      - Since we're using a computer, we're discretizing the $H$ space, so we can say that $|H|$ is finite and the sample complexity is finite too. Given, for example 32 bit per parameter we can have at most $|H| \leq 2^{32d}$ so $\ln(2^{32d}) \leq 10d$ and from this the obtain the **rule of thumb** of taking at least a # of samples 10 time the # of parameter.
 3. **Overfitting and Underfitting**
       - **Overfitting** is a phenomenon that occurs when a model is **too complex** or flexible and fits the training data too closely (including noise), resulting in poor performance on unseen data (test data) due to the model's inability to generalize.
       - **Underfitting** is a phenomenon that occurs when a model is **too simple** to capture the underlying patterns in the data. As a result it performs poorly on both the training and unseen data.
-4. **K-Fold Cross Validation**
-      - K-Fold Cross Validation is a technique used to evaluate the performance of a machine learning model. The training data is divided into K subsets, and the model is trained K times, each time using K-1 subsets for training and the remaining subset for validation. The performance of the model is then averaged over the K runs. If K is equal to the number of samples, it is called Leave-One-Out Cross Validation.
+      - A solution against overfitting is to use a **regularization** term that penalizes the complexity of the model. For example a special case of **Empirical Risk Minimization** can be obtained adding a parameter $\lambda$ to the loss function that penalizes the complexity of the model.
+4. **K-Fold Cross Validation** is a technique used to evaluate the performance of a machine learning model. The training data is divided into K subsets, and the model is trained K times, each time using K-1 subsets for training and the remaining subset for validation. The performance of the model is then averaged over the K runs. 
+      - If K is equal to the number of samples, it is called Leave-One-Out Cross Validation.
 1. **Linear Regression Algorithms** are used to predict a **continuous** output variable based on the input features. In classification $Y = {1,2,3,...,K}$, in regression $Y \in \mathbb{R}$.
       - **Loss Functions** for regression are typically based on the difference between the predicted value and the true value. A common loss function is the Mean Squared Error (MSE) $L(y,\hat{y}) = (y-\hat{y})^2$.
       - **Linear Regression** is a simple and commonly used regression algorithm that models the relationship between the input features and the output variable as a linear function.
@@ -143,7 +145,7 @@ The best choice of activation function remains the ReLU function, using a Leaky 
    - RoI Pooling is a technique used in object detection algorithms to extract features from a region of interest (RoI) in an image. It works by dividing the RoI into a grid of sub-windows and then "snapping" the features to the grid. This can lead to a loss of information and reduce the accuracy of the object detection algorithm.
    - RoI Align is a variation of RoI pooling that uses **bilinear interpolation** to align the features with the grid. This can help to preserve the spatial information and improve the accuracy of the object detection algorithm.
 
-5. **Semantic Segmentation** is the task of classifying each pixel in an image according to the object it belongs to. It is a pixel-level classification task that can be used to create detailed and accurate object masks. Various techniques can be used for semantic segmentation, such as fully convolutional networks and U-Net.
+5. **Semantic Segmentation** is a fundamental topic in computer vision that aims to classify each pixel in an image according to the object (class) it belongs to. It is a pixel-level classification task that can be used to create detailed and accurate object masks. Various techniques can be used for semantic segmentation, such as fully convolutional networks and U-Net.
 
 1. **Fully Convolutional Networks (FCNs)** are used to perform semantic segmentation by applying **Downsampling** and **Upsampling** inside the network.
 First a series of convolutional layers are applied to the input image to extract the **features vector**. The network is then designed to upsample the feature vector and the obtained output is a **pixel-wise** classification with original image size $C$ x $H$ x $W$ where $C$ is the number of classes. 
@@ -233,6 +235,24 @@ And example of Self-supervised learning is to extract two patches from an image 
 **Top-N error** : is a metric used to evaluate the performance of a classification model, it is the percentage of the time that the true class is not in the top N predicted classes. For example, if the top-5 error is 0.15, that means that 15% of the time the true class is not in the top 5 predicted classes (the top-5 most probable classes do not include the true class)
 
 --------------------------------------------------------------------------------------------
+### Project notes
+--------------------------------------------------------------------------------------------
+1. **UNet** is a type of Convolutional Neural Network mainly used for Semantic Segmentation based on an evolution of the "skip-connection" structure from FCN. The network is composed of an **encoder** (going down) and a **decoder**. The encoder uses convolutions to extract features from the input image, while the decoder is used to upsample the feature map and produce the final segmentation mask by means of deconvolutions and unpooling. The skip-connections are used at various levels to combine the feature maps from the encoder with the feature maps from the decoder, which can help to preserve the spatial informations lost by the deeper levels of the encoder.
+
+1. **Attention Mechanism** is a technique that can use the high-level informations (features) to guide the feed-forward network
+
+1. **BiSeNet** proposes a lightweight tw-stream network for real-time semantic segmentation.
+      Most important parts of the network are:
+      - **Spatial Path** : A simple CNN designed to preserve (most of) the spatial size of the original input image while encoding rich spatial information (features). The spatial path consists of three convolutional layers, each with a stride of 2, followed by batch normalization and a rectified linear unit (ReLU).Extracts output feature maps that are 1/8 of the original image size.
+      - **Context Path** : A deep CNN designed to capture the global contextual information of the input image. It uses a lightweight model, such as Xception or ResNet-101, to extract high-level features from the input image. This model can quickly downsample the feature map to obtain a large receptive field that encodes high-level semantic context information. After downsampling, a global average pooling operation is applied, providing the maximum receptive field with global context information.
+      - **Feature Fusion Module** : Given that the output features of the Spacial Path are low-level while the ones from Context Path are high-level, the Feature Fusion Module is used to combine the two feature maps. 
+      - **Attention Refinement Module** : Used in the context path to refine the features of each stage by using average pooling to capture the global context and computing an  **attention vector** to weight the features. Can refine the output feature of each stage without upsampling, thus requiring less computation.
+
+1. **Rethinking BiseNet** for Real-time Semantic Segmentation
+   - Proposes a novel hand-crafted module called Short-Term Dense Concatenate (STDC) that is then integrated into a U-Net architecture to improve the performance of the model.
+   - Concatenates 
+
+1. **Adapt Structured Output Space for Semantic Segmentation** proposes an End-toEnd CNN-based domain adaptation method based on **adversarial learning** that aims to directly make the predictied label distributions close to each-other. The algorithm is based on Generative Adversarial Networks (GANs) and uses (1) a segmentation model to predict output results and (2) a domain discriminator to distinguish whether the input image is from the source or target domain. By the use of an **adversarial loss** the model aims to **fool the discriminator** with the goal of generating similar distributions in the output space for both domains. To also adapt low-level features, the model uses a **multi-level adversarial loss** obtained by incorporating the adversarial Learning at different levels of the network.
 
 # Other AML questions
 
