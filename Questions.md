@@ -54,17 +54,31 @@ But that function still has no analytical solution, so we use the **Gradient Des
       - The **Learning Rate** $\alpha$ is a hyperparameter that controls the size of the updates. If the learning rate is too small, the algorithm may take a long time to converge, while if it is too large, the algorithm may oscillate or diverge. The size of the step is given by $\alpha ||\nabla f||$. The learning rate can be fixed, adaptive or follow a schedule. 
       - *decay* is a technique used to reduce the learning rate over time, which can help the algorithm to converge more effectively.
       - *momentum* is a technique used to accelerate the convergence of the algorithm by adding a fraction of the previous update to the current update. 
-      - Two major bottlenecks of the algorithm make it unsuitable for Deep Learning: the number of samples (we're computing the gradient over the entire dataset) and the number of parameters (milions of parameter!).
+      - Two major bottlenecks of the GD algorithm make it unsuitable for Deep Learning: the number of samples (we're computing the gradient over the entire dataset) and the number of parameters (milions of parameter!).
 
-3. **Stochastic Gradient Descent (SGD)** is a variant of gradient descent that updates the parameters of the model using a **single batch of data** $B$ at a time, rather than the entire training set. This can lead to faster convergence, but it can also be more noisy and may require more iterations to converge. Small batches can also offer a regularization effect. Compared to GD, SGD can find low value of the loss quickly enough to be useful in DL, even if most of the time it's not the minimum.
+3. **Stochastic Gradient Descent (SGD)** is a variant of gradient descent that updates the parameters of the model using an **approximation of the gradient** obtained from a **single batch of data** $B$ at a time, rather than the entire training set. This can lead to faster convergence, but it can also be more noisy and may require more iterations to converge. Small batches can also offer a regularization effect. Compared to GD, SGD can find low value of the loss quickly enough to be useful in DL, even if most of the time it's not the minimum.
+
+4. **Learning Rate Schedules** are used to adjust the learning rate over time, according to some kind of scheduel, to improve the performance of the model. Some common learning rate schedules include:
+      - **Step Decay** : The learning rate is reduced by a factor every few epochs (for example halfed every 10 epoch).
+      - **Exponential Decay** : The learning rate is reduced exponentially over time. $lr = lr_0 * e^{(−kt)}$
+      - **Cosine** : The learning rate is reduced according to a cosine function. 
+
+5. **Optimizers** are a technique used to update the parameters of the model during training. Some common optimizers include:
+      - **Stochastic Gradient Descent (SGD)** : Implements the Stochastic Gradient Descent algorithm to update the model parameters based on an approximation of the gradient obtained from a small batch of samples. I can adopt momentum and decay.
+      - **Adam** : is a stochastic gradient descent method that is based on adaptive estimation of first-order and second-order moments. It is computationally efficient and is widely used in deep learning.
+      - **RMSprop** : An optimizer that uses an adaptive learning rate to update the parameters of the model. It is similar to Adam but does not use momentum.
 
 ## Lesson 6
 1. **The perceptron** is a simple classifier loosely inspired by the way neurons work in the brain. It is used for binary classification and is based on the product of the **input features** and the **weights**, which are then summed and passed through an **activation function**. If the sum is greater than a threshold, the perceptron outputs +1, otherwise it outputs -1.
 To train the perceptron, it computes one sample at a time,if the sample is correctly classified the weights remain the same, otherwise the weights are updated by adding/removing the sample(feature vector) to the weights.
 If the data is **linearly separable**, the perceptron algorithm is guaranteed to converge to a solution. If the data is not linearly separable, on the other hand, there is a risk that the weights will become trash and the network will not converge.
 
-1. **Multilayer Perceptron (MLP)** is a type of neural network that consists of multiple layers of **neurons**, including an input layer, one or more hidden layers, and an output layer. Each neuron in the network is connected to every neuron in the adjacent layers, and each connection has a weight associated with it. The network is trained using **backpropagation** of gradient.
+1. **Deep Feed-Forward Neural Network** or Multilayer Perceptron (MLP) is a type of neural network that consists of multiple layers of **neurons**, including an input layer, one or more hidden layers, and an output layer. Each neuron in the network is connected to every neuron in the adjacent layers, and each connection has a weight associated with it. The network is trained using **backpropagation** of gradient.
 
+1. **Universal Approximation Theorem** states that a feed-forward neural network with sigmoid activation layers and a single hidden layer containing a finite number of neurons can approximate any continuous function to arbitrary accuracy, given enough neurons. This means that a neural network can learn to represent any function, given enough neurons and training data.
+      - "For any continuous function $f(x)$ and any $\epsilon > 0$, $\exists$ $q\in\N$ that :  
+            $|f(x) - \sum_{k=1}^q u_k\phi(x)| < \epsilon$  
+            where $u_k$ are the weights and $\phi(x)$ is the sigmoid function $\sigma(Wx+b)$."
 1. **Why non linearity is important in cnn?**
       - Non-linearity is important in CNN because it allows the network to learn more complex representations of the data. This is because linear functions can only represent linear relationships, but non-linear functions can represent more complex relationships.
 
@@ -106,13 +120,14 @@ The best choice of activation function remains the ReLU function, using a Leaky 
 1. **Data Augmentation** is a technique used to increase the amount of data available at training time by applying transformations to the input data. This can help to improve the performance of the network and reduce the risk of overfitting. Common data augmentation techniques include flipping, rotating, scaling, and cropping the input data.
 
 1. **Model Ensembling** is a technique used to improve the performance of a machine learning model by training independent models and combining their predictions. At test time average the predictions of the models. Small increase in performance and it's computationally expensive.
+      - An alternative is to take snapshots of the model at different times during training and average the predictions of the N best snapshots at test time. This can help to improve the performance of the model and reduce the risk of overfitting.
 
 ## Lesson 9
 
 1. **Hyperparameter Tuning** is the process of finding the best set of hyperparameters for a machine learning model. This can be done using techniques such as **grid search** or random search. The best set of hyperparameters is the one that results in the best performance on a validation set.
       - The **Grid Search** is obtained by creating a table with all the possible parameters (and all their possible values) and train a different model for each possible parameters combination. It's really long and expensive.
 
-
+1. **Early Stopping** is a technique used to prevent overfitting in machine learning models : training for too long can lead to overfitting. The idea behind early stopping is to halt the training when the performance of the model on the validation set starts to decrease while are still increasing on the training set. This can help to prevent the model from learning the noise in the training data and improve its generalization performance.
 
 2. **Transfer Learning and Fine Tuning**
    - **Transfer learning** is a technique where a pre-trained model is used as a starting point for a new task, rather than training a model from scratch. This can save time and resources, and also improve performance. With Transfer Learning, the weights of the pre-trained model are frozen, and only the weights of the last layer are trained on the new task. An example is using a model pre-trained on ImageNet to perform image classification on a new dataset, changing only the last layer.
@@ -242,12 +257,20 @@ After the training, we can discard the decoder and use the encoder to produce th
 ### General notes
 --------------------------------------------------------------------------------------------
 
-**Softmax** : is often used as the last activation function of a neural network to normalize the output of a network to a probability distribution over predicted output classes. The function takes as input a vector z of K real numbers, and normalizes it into a probability distribution consisting of K probabilities proportional to the exponentials of the input numbers, indeed map the interval of values to the interval [0,1] (exponential)
+1. **Softmax** : is often used as the last activation function of a neural network to normalize the output of a network to a probability distribution over predicted output classes. The function takes as input a vector z of K real numbers, and normalizes it into a probability distribution consisting of K probabilities proportional to the exponentials of the input numbers, indeed map the interval of values to the interval [0,1] (exponential)
 
-**Cross Entropy loss**: is a loss function used to calculate the loss between probabilities, $H(P,Q) = - \sum_{i=1}^{N} P(i) log(Q(i))$, where P is the true probability of the class/event and Q is the predicted probability of the class/event. The cross-entropy loss is a measure of how different your predicted distribution is from the true distribution of the data. 
+1. **Cross Entropy loss**: is a loss function used to calculate the performance of a classification model whose output is a probability value. The CE loss increses as the predicted probability of the model diverges from the actual label.
+      - The formula is $CE = - \sum_{i=1}^{C} y_{o,i} log(p_{o,c})$  
+      where $C$ is the number of classes, $y_{o,i}$ is a binary indicator of whether class $i$ is the correct classification for observation $o$, and $p_{o,c}$ is the model's predicted probability that observation $o$ is of class $c$.
 
+1. **Categorical Cross Entropy Loss** also called Softmax Loss, is a Softmax Activation plus a Cross-Entropy loss. It is used for multi-class classification.
+      - In Multiclass Classification calculates a separate loss for each class :  
+      $CE = - \sum_{i=1}^{C} t_i log(f(s)_i) = \sum_{i=1}^{C} t_i log(\frac{e^{s_i}}{\sum_j^Ce^{s_j}})$  
+      where $C$ is the number of classes, $t_i$ is the class label and $f(s)_i$ is the predicted probability of the class $i$. Note that labels are one-hot encoded so $t_i \neq 0$ only when $t_i = t_p$ predicted label. 
+      - Given that in Multi-Class the labels are one-hot encoded, the loss can be simplified to :
+      $ - log(\frac{e^{s_p}}{\sum_j^Ce^{s_j}})$
 
-**Top-N error** : is a metric used to evaluate the performance of a classification model, it is the percentage of the time that the true class is not in the top N predicted classes. For example, if the top-5 error is 0.15, that means that 15% of the time the true class is not in the top 5 predicted classes (the top-5 most probable classes do not include the true class)
+1. **Top-N error** : is a metric used to evaluate the performance of a classification model, it is the percentage of the time that the true class is not in the top N predicted classes. For example, if the top-5 error is 0.15, that means that 15% of the time the true class is not in the top 5 predicted classes (the top-5 most probable classes do not include the true class)
 
 --------------------------------------------------------------------------------------------
 ### Project notes
