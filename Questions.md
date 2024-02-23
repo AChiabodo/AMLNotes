@@ -16,6 +16,7 @@
 2. **Maximum A Posteriori (MAP) Estimation** seeks to find the value of a parameter that maximizes the posterior probability distribution, taking into account both the likelihood of the data and the prior distribution.
 
 3. **Maximum Likelihood Estimation (MLE)** seeks to find the value of a parameter $\theta$ that maximizes the likelihood of the observed data, assuming a particular probability distribution. For large amounts of data, we can approximate MAP by MLE and use it to approximate our parameters.
+<img src="images/MLE.png" width="auto" class="center" height="auto">
 
 ## Lesson 3
 1. **Loss Functions** : We define the loss $L(h(X),Y)$ of the classifier $h(X)$ the function that measures the error between the assigned predictions and the true labels $Y$. Various types of loss exists like:
@@ -74,7 +75,7 @@ To train the perceptron, it computes one sample at a time,if the sample is corre
 If the data is **linearly separable**, the perceptron algorithm is guaranteed to converge to a solution. If the data is not linearly separable, on the other hand, there is a risk that the weights will become trash and the network will not converge.
 
 1. A **deep feed-forward neural network**, or multilayer perceptron (MLP), is a type of neural network that consists of multiple layers of **neurons**, including an input layer, one or more hidden layers, and an output layer. Each neuron in the network is connected to every neuron in the adjacent layers, and each connection has a weight associated with it. In each neuron we have a *linear combination of weights and input values*, which is then passed through an **activation function** (non-linear). The network is trained using gradient backpropagation.
-
+<img src="images/NN.png" width="auto" class="center" height="180">
 1. **Universal Approximation Theorem** states that a feed-forward neural network with sigmoid activation layers and a single hidden layer containing a finite number of neurons can approximate any continuous function to arbitrary accuracy, given enough neurons. This means that a neural network can learn to represent any function, given enough neurons and training data.
       - "For any continuous function $f(x)$ and any $\epsilon > 0$, $\exists$ $q\in\N$ that :  
             $|f(x) - \sum_{k=1}^q u_k\phi(x)| < \epsilon$  
@@ -87,7 +88,7 @@ In general the loss function is not convex, so we use the **Gradient Descent** a
       - **Computational Graph** is a directed, acyclic graph representing the computation of a generic function $f$ with intermediate variables. Is used to decompose complex functions into simpler parts and to compute the derivatives of the function with respect to its parameters.
       - **Forward Mode** is a technique used to compute the **derivatives** of a function by computing all the partial derivatives with respect to the input $\frac{\partial x}{\partial x} = 1$. The main problem of this approach is that its complexity depends on the dimensionality of the input.
       - **Backward Mode** differenly from the Forward Mode, computes the derivatives of the function with respect to the inner nodes of the computational graph $\frac{\partial f}{\partial f} = 1$ and then propagates the gradient backwards. It's more efficient than the Forward Mode because its complexity depends on the dimensionality of the output.
-
+![An example of Computational Graph](images/cg1.png)
 1. **Backpropagation** (reverse-mode automatic differentiation) is a technique used to compute the gradient of a loss function with respect to the parameters of a neural network. It is based on (not only) the chain rule of calculus and is used to update the weights of the network during training. The main steps of the backpropagation algorithm are:
       - **Forward Pass** : Compute the output of the network for a given input.
       - **Backward Pass** : Compute the gradient of the loss function with respect to the output of the network, and then use the chain rule to compute the gradient of the loss function with respect to the parameters of the network.
@@ -101,10 +102,27 @@ In general the loss function is not convex, so we use the **Gradient Descent** a
       - The loss wil be **non-convex** with multiple local minima, and the optimum reached depends also on the initialization of the weights. Note that we're not interested in the global minimum because it would cause overfitting.
       - The loss will be non-differentiable in some points, so numerical issues can arise and there are a lot of tricks needed to avoid them (for example the ReLU is non differentiable in 0, but we can use the subgradient).
 ## Lesson 7
+
+1. **Priors**: Data often carry structural priors that can be used to "simplify" the network and thus reduce the number of connections and parameters.Common priors in images are **repeating patterns**, locality, structure, etc. Data tends to be self-similar across the domain (same patterns but slightly different content, etc.).
+      - For example, we want a translation invariant model because we expect the same object (or the same *feature*) to be recognized even if it is at a *different* position in the image.
+
 1. **Convolutional Neural Networks (CNNs)** are a type of neural network that is well-suited for tasks such as image recognition and classification. They use a special type of layer called a **convolutional layer**, which applies a set of filters (kernel) to the input data to extract features. CNNs also use other types of layers such as pooling layers and fully connected layers to further process the data and make predictions.
-      - **Convolutional Layer** is a layer that **convolves** the input data with a set of filters to extract features. This can help the network to learn to recognize patterns in the input data. The output size of the convolutional layer is given by the formula $O = \frac{N-F+2P}{S} + 1$ where $N$ is the input size, $F$ is the kernel size, $P$ is the padding and $S$ is the stride. Each filter in the convolutional layer can learn to recognize different patterns and features in the input data.
-      - **Pooling Layer** is a layer that reduces the spatial dimensions of the input data by combining nearby values. This can help to reduce the computational cost of the network and make it more robust to small variations in the input data. An example of pooling is the Max Pooling layer.
-      - **Fully Connected Layer** is a layer that connects every neuron in one layer to every neuron in the next layer. This is the final layer of the network and is used to make predictions.
+
+1. The **Convolution** is a function obtained by the integral of the product of two functions after one is reversed and shifted. $f*g(t) = \int_{-\infty}^{\infty} f(\tau)g(t-\tau)d\tau$.  
+      In the case of CNNs, the convolution is a discrete convolution, and the kernel is the *filter* that is applied to the input data to extract features.
+
+1. **Convolutional Layer** is a layer that **convolves** the input data with a set of filters to extract features. This can help the network to learn to recognize patterns in the input data. The output size of the convolutional layer is given by the formula $O = \frac{N-F+2P}{S} + 1$ where $N$ is the input size, $F$ is the kernel size, $P$ is the padding and $S$ is the stride.  
+      Each filter in the convolutional layer can learn to recognize different patterns and features in the input data. 
+      - **Example** : with an input of size 3x32x32 and a filter of size 3x5x5 with a stride of 1 and no padding, the output will be 1x28x28. The result of each single convolution between the filter and a 3x5x5 subset of data will be a **single number** that "contains" informations about the whole subset. After the filter is fully convolved with the input data, the result is a single **feature map**. We can have multiple filters in the same layer to obtain multiple feature maps that are then stacked together (a 6x3x5x5 filter would gives us a 6x28x28 feature map). 
+      - **Padding** is a technique used to add extra pixels around the input data to control the spatial dimensions of the output data. It can help to prevent the spatial dimensions of the data from shrinking too much and/or to introduce a little bit of noise. It's common to use a padding that keeps the spatial dimensions of the input data unchanged after the convolution ($P=\frac{F-1}{2}$ and stride of 1).
+      - **Zoom Effect** : Even if the kernel is chosen to mantain the same dimensionality of the input, each pixel in output will summarize a larger portion of the input, so the output will be a **zoomed-out** version of the input.
+      - **Hyperparameters** : There are 4 hyperparameters that can be tuned in a convolutional layer : $K$ (number of filters), $F$ (filter size), $S$ (stride) and $P$ (padding). The number of parameters in a convolutional layer is given by $K \cdot F \cdot F \cdot C$ where $C$ is the number of channels of the input data.
+1. **Pooling Layer** is a layer that reduces the spatial dimensions of the input data by combining nearby values. This can help to reduce the computational cost of the network and make it more robust to small variations in the input data. An example of pooling is the Max Pooling layer. Note that the pooling layer hasn't any parameters to learn.
+      - **Max-Pooling Layer** takes the maximum value of a subset of the input data, introducing invariance to small spacial shifts 
+      - **Average-Pooling Layer** takes the average value of a subset of the input data.
+      - **Global Average Pooling** is a pooling operation designed to replace fully connected layers in classical CNNs. Instead of adding fully connected layers on top of the feature maps, we take the average of each feature map, and the resulting vector is fed directly into the softmax layer. 
+
+1. **Fully Connected Layer** is a layer that connects every neuron in one layer to every neuron in the next layer. This is the final layer of the network and is used to make predictions.
 
 ## Lesson 8
 
@@ -123,13 +141,19 @@ There are different possible activation functions that can be used in neural net
       - **Leaky ReLU** is a variation of the ReLU activation function that allows a small gradient when the input is negative, which can help to prevent the "dying ReLU" problem.
       - **ELU** (Exponential Linear Unit) is a non-linear activation function that returns the input if it is positive, and an exponential function of the input otherwise. It is similar to the ReLU function, has an output closer to zero-mean but is computationally expensive.
 
-The best choice of activation function remains the ReLU function, using a Leaky ReLU or ELU function can improve just a little bit the performance of the network.
+The best choice of activation function remains the **ReLU** function, using a Leaky ReLU or ELU function can improve just a little bit the performance of the network.
+
+3. **Data Preprocessing** is a technique used to prepare the input data for training a neural network. This can help to improve the performance of the network and reduce the risk of overfitting. Note that for images we wanto to avoid too complex preprocessing (PCA etc), here are three common techniques:
+      - Subtract the mean image 
+      - Subtract per-channel mean (3 numbers)
+      - Subtract per-channel mean and Divide per-channel std (3 numbers)
 
 3. **Weights Initialization** is an important aspect of training neural networks. The initial values of the weights can have a significant impact on the performance of the network. 
       - **Zero Initialization** is a method for initializing the weights of a neural network that sets all the weights to zero. Not recommended because it can lead all the layers to evolve in the same way loosing the specialization.
       - **Random Initialization** sets all weights to random values. This can help to break the symmetry of the network but works only on small networks, on deeper networks can couse problems with the gradient.
       - **Xavier Initialization** is a weights initialization method for a neural network that is designed to keep the **variance** of the activations constant across layers. It is based on the assumption that the input and output of each layer are normally distributed. The Xavier initialization method scales the weights by a factor of $\sqrt{\frac{1}{n_{in}}}$ where $n_{in}$ is the number of input units to the layer. It works only with the tanh activation functions. 
       - **MSRA Initialization** is a variation of Xavier initialization that is designed to work better with the ReLU activation function. It scales the weights by a factor of $\sqrt{\frac{2}{n_{in}}}$ where $n_{in}$ is the number of input units to the layer.
+      - **ResNets Initialization** is similiar to MSRA but, for each residual block, the first is initialized with MSRA and the second with 0s.
 
 1. **Dropout** is a regularisation technique used in neural networks to prevent overfitting. It works by dropping a random fraction of the nodes at each update during training. The probability of dropping a unit is an adjustable hyperparameter (usually 0.5). It forces the network to have a redundant representation and thus better generalisation. It can also be seen as training an ensemble of networks. Usually done in fully connected layers to reduce complexity. At test time, all neurons are active, but their output is scaled by the dropout probability (or divided at test time).
 
@@ -147,7 +171,8 @@ The best choice of activation function remains the ReLU function, using a Leaky 
 
 2. **Transfer Learning and Fine Tuning**
    - **Transfer learning** is a technique where a pre-trained model is used as a starting point for a new task, rather than training a model from scratch. This can save time and resources, and also improve performance. With Transfer Learning, the weights of the pre-trained model are frozen, and only the weights of the last layer are trained on the new task. An example is using a model pre-trained on ImageNet to perform image classification on a new dataset, changing only the last layer.
-   - **Fine-tuning** is a similar technique where the weights of the pre-trained model (more layers) are updated for the new task, typically by using a smaller learning rate. The number of layers that we want to re-learn depends on the size of the new dataset and the similarity between the new and the old dataset.
+   - **Fine-tuning** is a similar technique where the weights of the pre-trained model (more layers) are updated for the new task, typically by using a smaller learning rate. The number of layers that we want to re-learn depends on the size of the new dataset and the similarity between the new and the old dataset.  
+<img src="images/transfer_learning.png" width="auto" class="center" height="240">
 
 3. **AlexNet** is the first Deep Convolutional Neural Network that won the ImageNet competition in 2012. It is composed of 5 convolutional layers, 3 max-pooling layers, and 3 fully connected layers. It uses the ReLU activation function and dropout for regularization. It also uses data augmentation and batch normalization to improve the performance of the network.
 
@@ -156,7 +181,10 @@ The best choice of activation function remains the ReLU function, using a Leaky 
 1. **GoogleNet** is a deep convolutional neural network that was designed to be computationally efficient (no Fully Connected layers) while achieving high performance on image classification tasks. It uses a module called an **Inception module** that combines multiple convolutional layers with different kernel sizes and pooling layers to extract features from the input data. The network also uses **global average pooling** instead of Fully Connected layers to reduce the spatial dimensions of the input data before making predictions. The network is too deep to be trained only with loss at the end, so it uses two **auxiliary classifiers** to help the training of the network.
 
 2. **Residual Networks (ResNets)** are a type of deep convolutional neural network that use a special type of layer called a **residual block**. A residual block consists of a set of convolutional layers followed by a **skip connection** that adds the input to the output of the convolutional layers. This allows the network to learn the residual (difference) between the input and the output, which can help to prevent the vanishing gradient problem and make it easier to train very deep networks. The skip connection can be implemented in different ways, such as adding the input to the output.
-      - **Resildual Block** : 
+      - **Residual Blocks** are made up of two convolutional layers and a skip connection. The stripe and padding of each convolutional layer are chosen to keep the spatial dimensions of the input data unchanged.
+      - **Bottleneck Residual Blocks** are a variation of the residual block that uses a 1x1 convolutional layer to reduce the number of channels before applying the 3x3 convolutional layer, and then uses another 1x1 convolutional layer to increase the number of channels back to the original value. This can help to reduce the computational cost of the network.
+
+<img src="images/residual_block.png" width="auto" class="center" height="auto">
 
 3. **Neural Architecture Search (NAS)** is a technique used to automatically design the architecture of a neural network. One controller outputs network architectures that are then trained and evaluated. After training a bunch of models, make a gradient step on the controller. Over time the controller model will learn to generate better architectures. The search space is really large and the training of the models is computationally expensive.
 
@@ -171,7 +199,8 @@ The best choice of activation function remains the ReLU function, using a Leaky 
       - **Faster R-CNN** Uses a Region Proposal Network (RPN) after the backbone to generate the RoIs, then applies the Fast R-CNN to each RoI. The RPN is a small CNN that takes the feature map of the image and outputs the RoIs.
       - **Single Stage Detector** (SSD, YOLO) are object detection algorithms that use a single network to predict the bounding boxes and class labels for all objects in an image. They are faster than two-stage detectors but may have lower accuracy.
 
-2. **Intersection over Union (IoU)** is a metric used to evaluate the performance of object detection algorithms. It measures the overlap between the predicted bounding box and the ground truth bounding box. The IoU is calculated as the **area of intersection** between the two bounding boxes divided by the **area of union** between the two bounding boxes.
+2. **Intersection over Union (IoU)** is a metric used to evaluate the performance of object detection algorithms. It measures the overlap between the predicted bounding box and the ground truth bounding box. The IoU is calculated as the **area of intersection** between the two bounding boxes divided by the **area of union** between the two bounding boxes.  
+<img src="images/IoU.png" width="auto" height="180">
 
 3. **Non-Maximum Suppression (NMS)** is a technique used to reduce the number of overlapping bounding boxes produced by an object detection algorithm. It works by selecting the bounding box with the highest confidence score and removing any other bounding boxes that have a high overlap with it. This can help to improve the precision of the object detection algorithm.
 
@@ -235,7 +264,7 @@ First, a series of convolutional layers are applied to the input image to extrac
 1. **Domain Adaptation** is a technique used to adapt a model trained on one dataset to work well on a different but related dataset. Note that we're assuming that the model will do the **same task** on both dataset.
 
 1. **Adversarial Domain Adaptation (RevGrad)** is a Domain Adaptation technique that aims to make the two distributions (source and target) as close as possible. In theory, once the two distributions are completely overlapped we can train the model on the source domain and use it on target domain without performance degradation. In **RevGrad** we have a **domain classifier**, added to the base model, that tries to distinguish between the source and target domain. To overlap the to domains we'll **reverse the gradient** of the domain classifier, so the domain classifier will try to distinguish between the two domains and the base model will try to make the two domains as close as possible.
-
+<img src="images/RevGrad.png" width="auto" class="float-left" height="240">
 1. **ADDA** (Adversarial Discriminative Domain Adaptation) is a method for unsupervised domain adaptation, it is an extension of GANs, where the generator network is trained to generate samples from the target domain, and the discriminator network is trained to distinguish between samples from the source and target domains.
 1. **Cycle GAN** is a type of GAN that is able to translate images from one domain to another, it is trained by using cycle consistency loss which trains the model to maintain the same content and style of the input image after translation.
 1. **SBADA-GAN** is a semi-supervised generative adversarial network (GAN) that is used for cross-domain adaptation. It is designed to adapt a model trained on one dataset to work well on a different but related dataset.
