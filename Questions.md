@@ -82,7 +82,20 @@ If the data is **linearly separable**, the perceptron algorithm is guaranteed to
 1. **Why non linearity is important in cnn?**
       - Non-linearity is important in CNN because it allows the network to learn more complex representations of the data. This is because linear functions can only represent linear relationships, but non-linear functions can represent more complex relationships.
 
-1. **Backpropagation** 
+1. **MLP Training** : Given an MLP $g_\Theta (x) = ... = y$ with training pairs $(x_i,y_i)$, we want to find the parameters $\Theta$ that minimize the loss function $L_\Theta({x_i,y_i}) = \frac{1}{n}\sum_{i=1}^n ||y_i - g_\Theta(x_i)||^2_2$.  
+In general the loss function is not convex, so we use the **Gradient Descent** algorithm to minimize the loss function, but it needs to compute the gradient $\nabla l_\Theta$ which is **really difficult**.
+      - **Computational Graph** is a directed, acyclic graph representing the computation of a generic function $f$ with intermediate variables. Is used to decompose complex functions into simpler parts and to compute the derivatives of the function with respect to its parameters.
+      - **Forward Mode** is a technique used to compute the **derivatives** of a function by computing all the partial derivatives with respect to the input $\frac{\partial x}{\partial x} = 1$. The main problem of this approach is that its complexity depends on the dimensionality of the input.
+      - **Backward Mode** differenly from the Forward Mode, computes the derivatives of the function with respect to the inner nodes of the computational graph $\frac{\partial f}{\partial f} = 1$ and then propagates the gradient backwards. It's more efficient than the Forward Mode because its complexity depends on the dimensionality of the output.
+
+1. **Backpropagation** (reverse-mode automatic differentiation) is a technique used to compute the gradient of a loss function with respect to the parameters of a neural network. It is based on (not only) the chain rule of calculus and is used to update the weights of the network during training. The main steps of the backpropagation algorithm are:
+      - **Forward Pass** : Compute the output of the network for a given input.
+      - **Backward Pass** : Compute the gradient of the loss function with respect to the output of the network, and then use the chain rule to compute the gradient of the loss function with respect to the parameters of the network.
+      - **Update the Weights** : Use the gradient to update the weights of the network using an optimization algorithm such as gradient descent.
+
+1. **Special cases** : We've seen that in some special cases the loss is convex :
+      - One layer, no activation function, MSE loss is **linear regression**.
+      - One layer, sigmoid activation function, logistic loss is **logistic regression**.   
 
 ## Lesson 7
 1. **Convolutional Neural Networks (CNNs)** are a type of neural network that is well-suited for tasks such as image recognition and classification. They use a special type of layer called a **convolutional layer**, which applies a set of filters (kernel) to the input data to extract features. CNNs also use other types of layers such as pooling layers and fully connected layers to further process the data and make predictions.
