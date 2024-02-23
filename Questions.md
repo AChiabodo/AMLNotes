@@ -178,8 +178,8 @@ The best choice of activation function remains the **ReLU** function, using a Le
 
 ## Lesson 10
 
-1. **VGG** is a deep convolutional neural network based on a **modular** design made of multiple blocks  
-Main design choice :
+1. **VGG** is a deep convolutional neural network based on a **modular** design made of multiple blocks. Each block is made up of a set of convolutional layers followed by a max-pooling layer. Given its semplicity its been widely used as a backbone for more complex models (es BiSeNet etc.) 
+Main design choices :
       - All convolutional layers are 3x3 with stride 1 and padding 1.
       - All max-pooling layers are 2x2 with stride 2.
       - After each pooling layer, the number of channels is doubled.
