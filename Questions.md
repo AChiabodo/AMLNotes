@@ -178,6 +178,12 @@ The best choice of activation function remains the **ReLU** function, using a Le
 
 ## Lesson 10
 
+1. **VGG** is a deep convolutional neural network based on a **modular** design made of multiple blocks. Each block is made up of a set of convolutional layers followed by a max-pooling layer. Given its semplicity its been widely used as a backbone for more complex models (es BiSeNet etc.) 
+Main design choices :
+      - All convolutional layers are 3x3 with stride 1 and padding 1.
+      - All max-pooling layers are 2x2 with stride 2.
+      - After each pooling layer, the number of channels is doubled.
+
 1. **GoogleNet** is a deep convolutional neural network that was designed to be computationally efficient (no Fully Connected layers) while achieving high performance on image classification tasks. It uses a module called an **Inception module** that combines multiple convolutional layers with different kernel sizes and pooling layers to extract features from the input data. The network also uses **global average pooling** instead of Fully Connected layers to reduce the spatial dimensions of the input data before making predictions. The network is too deep to be trained only with loss at the end, so it uses two **auxiliary classifiers** to help the training of the network.
 
 2. **Residual Networks (ResNets)** are a type of deep convolutional neural network that use a special type of layer called a **residual block**. A residual block consists of a set of convolutional layers followed by a **skip connection** that adds the input to the output of the convolutional layers. This allows the network to learn the residual (difference) between the input and the output, which can help to prevent the vanishing gradient problem and make it easier to train very deep networks. The skip connection can be implemented in different ways, such as adding the input to the output.
