@@ -262,6 +262,7 @@ First, a series of convolutional layers are applied to the input image to extrac
       1. The last hidden state $s_0$ is combined with each hidden state through a Fully Connected Layer (MLP) to compute the **alignment scores** $e_{t,i} = f_{att}(s_{t-1},h_i)$. 
       1. The alignment scores are then passed through a **softmax** function to obtain the **attention weights** $a_{t,i}$. 
       1. The attention weights are then used to compute the **context vector** by taking a weighted sum of the hidden states. $c_t = \sum_i a_{t,i}h_i$
+<img src="images/Attention_RNN.jpg" width="100%" class="float-left" height="auto">
 1. **Advantages of RNN with Attention** are that the whole network is differentiable, so it can be easily trained with backpropagation, and that the attention mechanism allows the model to focus on the most relevant parts of the input data. Note that at each time step the context vector is different, so the model can focus on different parts of the input at different time steps.
 
 ## Lesson 13
