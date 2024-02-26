@@ -107,8 +107,9 @@ If the data is **linearly separable**, the perceptron algorithm is guaranteed to
 In general the loss function is not convex, so we use the **Gradient Descent** algorithm to minimize the loss function, but it needs to compute the gradient $\nabla l_\Theta$ which is **really difficult**.
       - **Computational Graph** is a directed, acyclic graph representing the computation of a generic function $f$ with intermediate variables. Is used to decompose complex functions into simpler parts and to compute the derivatives of the function with respect to its parameters.
       - **Forward Mode** is a technique used to compute the **derivatives** of a function by computing all the partial derivatives with respect to the input $\frac{\partial x}{\partial x} = 1$. The main problem of this approach is that its complexity depends on the dimensionality of the input.
+      ![alt text](images/ad_forwardmode.png)
       - **Backward Mode** differenly from the Forward Mode, computes the derivatives of the function with respect to the inner nodes of the computational graph $\frac{\partial f}{\partial f} = 1$ and then propagates the gradient backwards. It's more efficient than the Forward Mode because its complexity depends on the dimensionality of the output.
-![An example of Computational Graph](images/cg1.png)
+![alt text](images/ad_reversemode.png)
 1. **Backpropagation** (reverse-mode automatic differentiation) is a technique used to compute the gradient of a loss function with respect to the parameters of a neural network. It is based on (not only) the chain rule of calculus and is used to update the weights of the network during training. The main steps of the backpropagation algorithm are:
       - **Forward Pass** : Compute the output of the network for a given input.
       - **Backward Pass** : Compute the gradient of the loss function with respect to the output of the network, and then use the chain rule to compute the gradient of the loss function with respect to the parameters of the network.
@@ -127,7 +128,7 @@ In general the loss function is not convex, so we use the **Gradient Descent** a
       - For example, we want a translation invariant model because we expect the same object (or the same *feature*) to be recognized even if it is at a *different* position in the image.
 
 1. **Convolutional Neural Networks (CNNs)** are a type of neural network that is well-suited for tasks such as image recognition and classification. They use a special type of layer called a **convolutional layer**, which applies a set of filters (kernel) to the input data to extract features. CNNs also use other types of layers such as pooling layers and fully connected layers to further process the data and make predictions.
-
+![alt text](images/cnn_pooling.png)
 1. The **Convolution** is a function obtained by the integral of the product of two functions after one is reversed and shifted. $f*g(t) = \int_{-\infty}^{\infty} f(\tau)g(t-\tau)d\tau$.  
       In the case of CNNs, the convolution is a discrete convolution, and the kernel is the *filter* that is applied to the input data to extract features.
 
@@ -175,7 +176,7 @@ The best choice of activation function remains the **ReLU** function, using a Le
       - **MSRA Initialization** is a variation of Xavier initialization that is designed to work better with the ReLU activation function. It scales the weights by a factor of $\sqrt{\frac{2}{n_{in}}}$ where $n_{in}$ is the number of input units to the layer.
       - **ResNets Initialization** is similiar to MSRA but, for each residual block, the first is initialized with MSRA and the second with 0s.
 
-1. **Dropout** is a regularisation technique used in neural networks to prevent overfitting. It works by dropping a random fraction of the nodes at each update during training. The probability of dropping a unit is an adjustable hyperparameter (usually 0.5). It forces the network to have a redundant representation and thus better generalisation. It can also be seen as training an ensemble of networks. Usually done in fully connected layers to reduce complexity. At test time, all neurons are active, but their output is scaled by the dropout probability (or divided at test time).
+1. **Dropout** is a regularisation technique used in neural networks to prevent overfitting. It works by "dropping" (setting to zero) a random fraction of the nodes at each update during training. The probability of dropping a unit is an adjustable hyperparameter (usually 0.5). It forces the network to have a redundant representation and thus better generalisation. It can also be seen as training an ensemble of networks. Usually done in fully connected layers to reduce complexity. At test time, all neurons are active, but their output is scaled by the dropout probability (or divided at test time).
 
 1. **Data Augmentation** is a technique used to increase the amount of data available at training time by applying transformations to the input data. This can help to improve the performance of the network and reduce the risk of overfitting. Common data augmentation techniques include flipping, rotating, scaling, and cropping the input data.
 
@@ -218,6 +219,13 @@ Main design choices :
 1. **Multitask Learning** is a technique where a model is trained to perform multiple tasks simultaneously. This can help to improve the performance of the model by allowing it to learn shared representations of the data that can be used for multiple tasks. The model is trained on a joint loss function that combines the losses of the individual tasks.
       - Multi-task vs Transfer Learning: In multi-task learning, the model is trained to perform multiple tasks simultaneously, while in transfer learning, a pre-trained model is fine-tuned for a new task.
 
+<table><tr><td>Object Detection</td><td>Semantic Segmentation</td></tr>
+<tr>
+<td><img src="images/ObjectDetection.png" width="100%" class="float-left" height="220px">
+</td>
+<td><img src="images/SemanticSegmentation.png" width="100%" class="float-left" height="220px">
+</tr></table>
+
 1. **Object Detection** is the task of identifying and localizing (multiple) objects within an image or video. Various techniques can be used for object detection, such as sliding window, region-based, and single-shot detection methods.
       - **Sliding Window** Apply a CNN to many different crops of the image, CNN classifies each crop as object or background. The main problem is the computational cost (an 800x600 images has 58M boxes).
       - **R-CNN** Use a **region-proposal** (selective search) algorithm to propose a set of regions with "blobby" shapes, then the CNN is applied to each region. The main problem now is the selective search algorithm that is slow and produces too many regions.
@@ -238,12 +246,25 @@ Main design choices :
 
 1. **Fully Convolutional Networks (FCNs)** are used to perform semantic segmentation by applying **downsampling** and **upsampling** within the network.
 First, a series of convolutional layers are applied to the input image to extract the **feature vector**. The network is then designed to upsample the feature vector and the output is a **pixel-wise** classification with the original image size $C$ x $H$ x $W$, where $C$ is the number of classes. 
+
       - The **downsampling** is performed by applying a series of convolutional layers alternating with pooling layers. The convolutional layers are used to extract the features from the input image, while the pooling layers are used to reduce the spatial dimensions of the feature map.
       - **Upsampling** is performed by applying "unpooling" layers such as Bilinear Interpolation, Max Unpooling, etc. No learning is involved with these types of layers. An alternative is **Transposed Convolution**, which is a learnable layer that can be used to upsample the feature map.
+      - **Transpose Convolution** is based on a learnable kernel that is multiplied by each value in the starting grid. The resulting values are positioned in the output grid and then summed when the output of the convolution overlaps the same cells. 
+<table><tr><td>Bilinear Interpolation</td><td>Transpose Convolution</td></tr>
+<tr>
+<td><img src="images/bilinear.png" width="100%" class="float-left" height="auto">
+</td>
+<td><img src="images/Deconvolution.png" width="100%" class="float-left" height="">
+</tr></table>
 
 1. **Instance Segmentation** is the task of identifying and localising each object instance in an image. It is a combination of object detection and semantic segmentation and can be used to create detailed and accurate object masks for each object in an image. Can be performed with a **Mask R-CNN**, which extends the Faster R-CNN by adding a new task after RoI pooling: **Mask Prediction**.
-
 1. **Panoptic segmentation** is the task of simultaneously performing semantic segmentation and instance segmentation on an image (classifying each pixel and assigning different object instances in the image). It can be used to create detailed and accurate object masks for each object in an image and to classify each pixel according to the object it belongs to.
+<table><tr><td>Instance Segmentation</td><td>Panoptic Segmentation</td></tr>
+<tr>
+<td><img src="images/InstanceSegmentation.png" width="100%" class="float-left" height="220px">
+</td>
+<td><img src="images/PanopticSegmentation.png" width="100%" class="float-left" height="220px">
+</tr></table>
 
 ## Lesson 12
 
@@ -364,8 +385,8 @@ After the training, we can discard the decoder and use the encoder to produce th
 
 1. **Rethinking BiseNet** for Real-time Semantic Segmentation
    - Proposes a novel hand-crafted module called Short-Term Dense Concatenate (STDC) that is then integrated into a U-Net architecture to improve the performance of the model.
-   - Concatenates 
-
+   - Concatenates various STDC modules into the STDCnet architecture, which is then used as the backbone for the BiSeNet model, taking also the place of the spacial path.
+![alt text](images/STDCNet.PNG)
 1. **Adapt Structured Output Space for Semantic Segmentation** proposes an End-toEnd CNN-based domain adaptation method based on **adversarial learning** that aims to directly make the predictied label distributions close to each-other. The algorithm is based on Generative Adversarial Networks (GANs) and uses (1) a segmentation model to predict output results and (2) a domain discriminator to distinguish whether the input image is from the source or target domain. By the use of an **adversarial loss** the model aims to **fool the discriminator** with the goal of generating similar distributions in the output space for both domains. To also adapt low-level features, the model uses a **multi-level adversarial loss** obtained by incorporating the adversarial Learning at different levels of the network.
 
 # Other AML questions
