@@ -22,33 +22,51 @@
 1. **Loss Functions** : We define the loss $L(h(X),Y)$ of the classifier $h(X)$ the function that measures the error between the assigned predictions and the true labels $Y$. Various types of loss exists like:
       - **Adversarial Loss** : Used in GANs, aims to minimize the difference between the generated distribution and the true distribution by maximizing the probability that the domain discriminator confounds the two domains. 
       - **Cross-Entropy Loss** : Used in classification problems, it measures the difference between two probability distributions. $ L = \frac{1}{N} \sum_{i=1}^{N} y_i \log(\hat{y}_i) $ where $y_i$ is the true distribution of the i-th sample and $\hat{y_i}$ the predicted distribution.
+      - **Hinge Loss** : Used in SVMs, it measures the error between the predicted value and the true value. $L = \max(0, 1 - y_i \hat{y}_i)$ where $y_i$ is the true label and $\hat{y}_i$ the predicted label, with $ (y_i , \hat{y}_i) = [-1,+1]$.
 1. **True Risk** of a classifier $h$ is the probability that it does not predict the correct label for a given input $X$, drawn from the distribution $D$ given by $R_D(h) = P(h(X) \neq Y)$
       - We can also see the True Risk of a classifier as the **Expected Value** of the loss function over the distribution of the data.
 1. **Bayes Risk vs Empirical Risk**
       - **Bayes risk** is the expected loss (True Risk) of a bayes classifier over the current distribution of the data. It is the best possible performance that can be achieved for a given problem and cannot be improved.
       - **Empirical risk** $R_D(h)$ over the distribution $D$ is the average loss of the classifier over the training data. It is an estimate of the True Risk. It's impossible to obtain $R_D(h) = 0$ even with a Bayes Classifier. The predictions of any model are only approximately correct, so we'll allow our model to fail with a probability $\delta \in (0,1)$. $R(h) = \frac{1}{m}\sum_{i=1}{m}$
-      - **Empirical Risk Minimization** 
+      - **Empirical Risk Minimization** is a "framework" for training where we want to find the model that minimizes the number of errors (represented by our loss) over our training data.
+
 2. **PAC Learnability**:  An Hypothesis Class $H$ is PAC-learnable if there exists a function $m_H$ that, given enough samples, produces (with a certain probability $1-\delta$) an hypothesis that can achieve a true risk $R_D(h) \leq \epsilon$.
       - Directly from the definition of Empirical Risk, we can see that a model is PAC-learnable if, given enough samples, the empirical risk is close to the true risk ($R_D(h) \leq \epsilon$) with a certain probability $(1 - \delta)$. So our model should be Probably (with probability $1-\delta$) Approximately (with error $\epsilon$) Correct.
-      - The number of samples $m_H$ needed to achieve this over $H$ is called the **sample complexity** of the hypothesis class $H$, note that also depends on $\ln(|H|)$ and $H$ itself could be infinite. 
-      - Since we're using a computer, we're discretizing the $H$ space, so we can say that $|H|$ is finite and the sample complexity is finite too. Given, for example 32 bit per parameter we can have at most $|H| \leq 2^{32d}$ so $\ln(2^{32d}) \leq 10d$ and from this the obtain the **rule of thumb** of taking at least a # of samples 10 time the # of parameter.
+      - The number of samples $m_H$ needed to achieve this over $H$ is called the **sample complexity** of the hypothesis class $H$, note that also depends on $\ln(|H|)$ and $H$, which is a family of functions, could be infinite. 
+      - Since we're using a computer, we're discretizing the $H$ space, so we can say that $|H|$ is finite and the sample complexity is finite too. Given d parameters for the functions of $H$, 32 bit per parameter, we can have at most $|H| \leq 2^{32d}$ so $\ln(2^{32d}) \leq 10d$ and from this the obtain the **rule of thumb** of taking at least a # of samples 10 time the # of parameter.
 3. **Overfitting and Underfitting**
       - **Overfitting** is a phenomenon that occurs when a model is **too complex** or flexible and fits the training data too closely (including noise), resulting in poor performance on unseen data (test data) due to the model's inability to generalize.
       - **Underfitting** is a phenomenon that occurs when a model is **too simple** to capture the underlying patterns in the data. As a result it performs poorly on both the training and unseen data.
       - A solution against overfitting is to use a **regularization** term that penalizes the complexity of the model. For example a special case of **Empirical Risk Minimization** can be obtained adding a parameter $\lambda$ to the loss function that penalizes the complexity of the model.
 4. **K-Fold Cross Validation** is a technique used to evaluate the performance of a machine learning model. The training data is divided into K subsets, and the model is trained K times, each time using K-1 subsets for training and the remaining subset for validation. The performance of the model is then averaged over the K runs. 
       - If K is equal to the number of samples, it is called Leave-One-Out Cross Validation.
-1. **Linear Regression Algorithms** are used to predict a **continuous** output variable based on the input features. In classification $Y = {1,2,3,...,K}$, in regression $Y \in \mathbb{R}$.
+1. **Regression Algorithms** are used to predict a **continuous** output variable based on the input features. In classification $Y = {1,2,3,...,K}$, in regression $Y \in \mathbb{R}$. Works by minimizing the errors (loss) between the predicted values/function and the true values.
       - **Loss Functions** for regression are typically based on the difference between the predicted value and the true value. A common loss function is the Mean Squared Error (MSE) $L(y,\hat{y}) = (y-\hat{y})^2$.
       - **Linear Regression** is a simple and commonly used regression algorithm that models the relationship between the input features and the output variable as a linear function.
-      - **Ridge Regression** is a variation of linear regression that adds a regularization term to the cost function, to prevent overfitting.
-
+      - **Ridge Regression** is a variation of linear regression that adds a regularization term to the loss function to prevent overfitting. Now the loss become something like : $\frac{1}{2}||y-Xw||_2^2+\frac{\alpha}{2}||w||_2^2$ where $\alpha$ is the regularization parameter.
+      - **Polinomial Regression** can be seen as a linear regression with a non-linear transformation of the input features. It can be used to model non-linear relationships between the input features and the output variable.
+      - ERM with square loss over linear predictors is equivalent to solving a linear system of equations.
+ 
 ## Lesson 4
-1. **Logistic Regression** is a non-linear regression algorithm that is used for binary classification. It models the probability that an input belongs to a particular class using the logistic function. The loss function is :
+1. **Regression Models for classification** : The regression algorithms outputs continuous values (usually [0,1]), note that we can say that those outputs can also be seen as a **probability score** for our prediction.  
+We need to convert them to obtain a categorical value for our classification task, and we have two alternatives :
+      - **Thresholding** : We can set a threshold and assign the class based on the value of the output. For example, if the output is greater than 0.5, we can assign the class 1, otherwise we can assign the class 0. In this way we're losing all the optimality of our model
+      - **Change the loss function** : We can modify our loss function to minimize over categorical values. For example, we can use the logistic loss function that is based on the sigmoid function and is used for binary classification. The loss function is : $l({x_i,y_i}) = \sum_{i=1}^n(y_i-\sigma(ax_i+b))^2$.
+
+1. **Logistic Regression** is a non-linear regression algorithm that is used for binary classification. It directly models the probability that an input belongs to a particular class (posterior class probability) using the logistic loss. The loss function is :
 $$l({x_i,y_i}) = \sum_{i=1}^n(y_i-\sigma(ax_i+b))^2$$ 
-We can rewrite the loss function to have a convex problem as :
-$$l({x_i,y_i}) = \sum_{i=1}^ny_i\ln(\sigma(ax_i+b)) + (1-y_i\ln(1-\sigma(ax_i+b)))$$
+We can rewrite the loss function by using the random variable $y_i$ that indicates the ground truth class of the sample: 
+$$l({x_i,y_i}) = \sum_{i=1}^n c(x_i,y_i) \text{ with } c(x_i,y_i) = 
+\begin{cases} 
+-\ln(\sigma(ax_i+b)) & \text{if } y_i = 1 \\
+-\ln(1-\sigma(ax_i+b)) & \text{if } y_i = 0
+\end{cases}$$
+In this way we obtain that if our prediction is correct ($ax_i+b > 0 $ and $y_i = 1$ or $ax_i+b < 0 $ and $y_i = 0$) the cost $c$ is 0, otherwise the loss is really high (almost infinite).  
+The loss function obtained by rewriting this formula is convex and differentiable:
+$$l({x_i,y_i}) = \sum_{i=1}^ny_i\ln(\sigma(ax_i+b)) + (1-y_i)\ln(1-\sigma(ax_i+b))$$
 But that function still has no analytical solution, so we use the **Gradient Descent** algorithm to minimize the loss function.
+
+1. **SVM and Hinge Loss** : In SVM (no kernels) we aim to find the maximum linear separation between the two classes, and in order to do so we'll the **Hinge Loss**. We can see that loss for the SVMs as a special case of Empirical Risk Minimization with the addiction of a regularization term.
 
 2. **Gradient Descent** is a first-order algorithm used to minimize a loss function by **iteratively updating** the parameters of the model in the direction of the negative gradient of the loss function : $x^{(t+1)} = x^{(t)} - \alpha \nabla f(x^{(t)})$ and is orthogonal to level surfaces. It requires that the function $f$ is **differentiable** at all points. 
       - **Stationary point** is a point where  $\alpha \nabla f(x^{(t)}) = 0$ so the algorithm "remain stuck" at that point. We have no guarantee that the point is a minimum, it could be a saddle point for example. On the other hand in DL we're not interested in the global minimum because it would cause overfitting.
@@ -73,9 +91,11 @@ But that function still has no analytical solution, so we use the **Gradient Des
 1. **The perceptron** is a simple classifier loosely inspired by the way neurons work in the brain. It is used for binary classification and is based on the product of the **input features** and the **weights**, which are then summed and passed through an **activation function**. If the sum is greater than a threshold, the perceptron outputs +1, otherwise it outputs -1.
 To train the perceptron, it computes one sample at a time,if the sample is correctly classified the weights remain the same, otherwise the weights are updated by adding/removing the sample(feature vector) to the weights.
 If the data is **linearly separable**, the perceptron algorithm is guaranteed to converge to a solution. If the data is not linearly separable, on the other hand, there is a risk that the weights will become trash and the network will not converge.
+<img src="images/Perceptron.png" width="auto" class="center" height="180">
 
 1. A **deep feed-forward neural network**, or multilayer perceptron (MLP), is a type of neural network that consists of multiple layers of **neurons**, including an input layer, one or more hidden layers, and an output layer. Each neuron in the network is connected to every neuron in the adjacent layers, and each connection has a weight associated with it. In each neuron we have a *linear combination of weights and input values*, which is then passed through an **activation function** (non-linear). The network is trained using gradient backpropagation.
 <img src="images/NN.png" width="auto" class="center" height="180">
+
 1. **Universal Approximation Theorem** states that a feed-forward neural network with sigmoid activation layers and a single hidden layer containing a finite number of neurons can approximate any continuous function to arbitrary accuracy, given enough neurons. This means that a neural network can learn to represent any function, given enough neurons and training data.
       - "For any continuous function $f(x)$ and any $\epsilon > 0$, $\exists$ $q\in\N$ that :  
             $|f(x) - \sum_{k=1}^q u_k\phi(x)| < \epsilon$  
@@ -235,7 +255,7 @@ First, a series of convolutional layers are applied to the input image to extrac
       - **Many-to-One** : Takes multiple inputs and produces a single output. An example can be Sentiment Analysis, where the network takes multiple words in input and produces a single sentiment.
       - **Many-to-Many** : Takes multiple inputs and produces multiple outputs. An example can be Machine Translation, where the network takes multiple words in input and produces multiple words in output.
 
-3. **(vanilla) Recurrent Neural Networks (RNNs)** are a type of neural networks that have an **internal state** that is updated as a sequence is processed. The new state of the network is given by both the old state and the input. In "vanilla" RNNs we have a **single set of weights** that is used at every time step, so the same parameters must work with all the elements.
+3. **(vanilla) Recurrent Neural Networks (RNNs)** are a type of neural networks that have an **internal state** that is updated as a sequence is processed. They processes a sequence of data by applying a **recurrence formula** at every time step where the new state of the network is given by both the old state and the input. In "vanilla" RNNs we have a **single set of weights** that is used (and updated) at every time step, so the same parameters must work with all the elements.
       - **Backpropagation Through Time (BPTT)** is a technique used to train RNNs by unrolling the **whole network** through time and applying backpropagation to update the weights. The main problem is the vanishing gradient problem, that can make the training of the network really slow and unstable for bigger texts.
       - **Truncated BPTT** is a variation of BPTT where the text is truncated into parts (chunks) and the weights are updated at the end of each chunk. This can help to reduce the computational cost of training the network.
 
