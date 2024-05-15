@@ -357,7 +357,7 @@ After the training, we can discard the decoder and use the encoder to produce th
 1. **Softmax** : is often used as the last activation function of a neural network to normalize the output of a network to a probability distribution over predicted output classes. The function takes as input a vector z of K real numbers, and normalizes it into a probability distribution consisting of K probabilities proportional to the exponentials of the input numbers, indeed map the interval of values to the interval [0,1] (exponential)
 
 1. **Cross Entropy loss**: is a loss function used to calculate the performance of a classification model whose output is a probability value. The CE loss increses as the predicted probability of the model diverges from the actual label.
-      - The formula is $CE = - \sum_{i=1}^{C} y_{o,i} log(p_{o,c})$  
+      - The formula is $CE = - \sum_{i=1}^{C} y_{o,i} log(p_{o,c})$ 
       where $C$ is the number of classes, $y_{o,i}$ is a binary indicator of whether class $i$ is the correct classification for observation $o$, and $p_{o,c}$ is the model's predicted probability that observation $o$ is of class $c$.
 
 1. **Categorical Cross Entropy Loss** also called Softmax Loss, is a Softmax Activation plus a Cross-Entropy loss. It is used for multi-class classification.
@@ -389,67 +389,6 @@ After the training, we can discard the decoder and use the encoder to produce th
 ![alt text](images/STDCNet.PNG)
 1. **Adapt Structured Output Space for Semantic Segmentation** proposes an End-toEnd CNN-based domain adaptation method based on **adversarial learning** that aims to directly make the predictied label distributions close to each-other. The algorithm is based on Generative Adversarial Networks (GANs) and uses (1) a segmentation model to predict output results and (2) a domain discriminator to distinguish whether the input image is from the source or target domain. By the use of an **adversarial loss** the model aims to **fool the discriminator** with the goal of generating similar distributions in the output space for both domains. To also adapt low-level features, the model uses a **multi-level adversarial loss** obtained by incorporating the adversarial Learning at different levels of the network.
 
-# Other AML questions
-
-1. **batch normalization**
-   - Batch normalization is a technique used to normalize the input layer by adjusting and scaling the activations. It helps to reduce internal covariate shift, which can improve the stability and speed of training.
-4. **Gradient policy vs q learning**
-   - Gradient policy and Q-learning are both reinforcement learning algorithms, but they work differently. Gradient policy is a type of policy-based algorithm that uses gradient descent to optimize the policy, while Q-learning is a value-based algorithm that estimates the value of a state or action.
-5. **Self supervised learning**
-   - Self-supervised learning is a type of machine learning where the model learns from input data without the need for explicit labels. It can be used to learn useful representations of the data that can be used for other tasks.
-6. **Perceptron vs knn**
-   - Perceptron and KNN (k-nearest neighbors) are both supervised learning algorithms, but they work differently. Perceptron is a simple algorithm that can be used for binary classification, while KNN is a non-parametric algorithm that is used for classification and regression.
-7. **Generative vs discriminator**
-   - Generative and discriminator models are both used in GANs. The generator model generates new data, while the discriminator model is trained to distinguish between real and generated data.
-8. **Reinforcement learning**
-   - Reinforcement learning is a type of machine learning where an agent learns to make decisions by interacting with an environment and receiving feedback in the form of rewards or penalties. The goal of RL is to learn a policy, which is a strategy that specifies the action the agent should take under each possible state. The agent's objective is to maximize the cumulative reward over time.
-9. **Domain adaptation**
-   - Domain adaptation is a technique used to adapt a model trained on one dataset to work well on a different but related dataset.
-10. **Back propagation**
-      - Backpropagation is an algorithm used to train neural networks by updating the weights in the network so as to minimize the error of the output.
-11. **How optimization is done in cnn**
-      - In CNNs (Convolutional Neural Networks), optimization is typically done using methods such as stochastic gradient descent (SGD) or Adam.
-12. **Semantic segmentation**
-      - Semantic segmentation is a task where each pixel in an image is classified according to the object it belongs to.
-13. **Instance segmentation**
-      - Instance segmentation is similar to semantic segmentation, but it also involves separating individual instances of the same object class.
-14. **Object detection**
-      - Object detection is the task of identifying and localizing objects within an image or video.
-15. **Multitask vs transfer learning**
-      - Multitask learning is a technique where a model is trained to perform multiple tasks simultaneously, while transfer learning is a technique where a pre-trained model is fine-tuned for a new task.
-16. **Regression vs classification**
-      - Regression is a type of supervised learning where the goal is to predict a continuous output variable, while classification is a type of supervised learning where the goal is to predict a discrete output variable.
-18. **Batch normalization and its use for domain adaptation**
-      - Batch normalization can be used for domain adaptation by normalizing the activations of a pre-trained model to match the distribution of the new dataset.
-19. **how to choose hyperparameters**
-      - Hyperparameters can be chosen through methods such as grid search, random search, or Bayesian optimization.
-21. **Why we initialize the weights in cnn**
-      - In CNN, we initialize the weights to small random values to break symmetry and avoid zero gradients. This allows the network to learn different features in different layers.
-22. **Layer freezing**
-      - Layer freezing is a technique used to keep the weights of certain layers fixed during training. This can be useful when fine-tuning a pre-trained model, where we want to train only the last few layers.
-23. **Deep learning, how to find the best parameters**
-      - Finding the best parameters for deep learning can be done through techniques such as grid search, random search, and Bayesian optimization. These methods allow us to test different combinations of hyperparameters to find the best set that results in the best performance on a validation set.
-24. **Shallow learning vs deep learning**
-      - Shallow learning refers to traditional machine learning algorithms such as linear regression and decision trees, which have a small number of parameters. Deep learning, on the other hand, is a subfield of machine learning that uses neural networks with multiple layers, and a large number of parameters.
-26. **Describe learning process**
-      - The learning process in neural networks is the process of adjusting the weights of the network to minimize the error between the predicted output and the desired output. This is done through backpropagation and gradient descent.
-28. **Pca vs autoencoder**
-      - PCA (Principal Component Analysis) is a technique used for dimensionality reduction, it transforms the data into a new coordinate system where the dimensions are ordered by the amount of variance they explain. Autoencoder, on the other hand, is a neural network that aims to reconstruct its input, it is used for unsupervised feature learning and dimensionality reduction.
-29. **Describe GAN**
-      - GANs (Generative Adversarial Networks) are a type of deep learning model that consists of two parts: a generator network and a discriminator network. The generator network generates new data samples, while the discriminator network tries to distinguish between the generated samples and real samples.
-30. **RevGrad**
-      - RevGrad is a technique used to adapt a model trained on one domain to another domain. It works by reversing the gradient of the domain classifier and using it to update the model's parameters.
-36. **batch normalization for DA**
-      - Batch normalization is a technique used to normalize the input data in order to improve the performance of a model. In the context of domain adaptation, batch normalization is used to adjust the model's internal representations to better align with the target domain.
-37. **multi source BATCH NORMALIZATION for DA**
-      - Multi-source batch normalization is an extension of batch normalization for domain adaptation, where the model is trained on multiple source domains and then adapted to a target domain. This allows the model to learn more robust features that are invariant to multiple source domains.
-38. **Domain generalization**
-      - Domain generalization is a technique used to train models that can generalize well to unseen domains. The goal is to learn features that are robust to variations in the input data, allowing the model to work well on unseen data.
-39. **RNN-LSTM**
-      - Recurrent Neural Networks (RNNs) are a type of neural network that can process sequential data such as time series or natural language. Long Short-Term Memory (LSTM) is a specific type of RNN that is designed to handle long-term dependencies in the input data.
-
-42. **transformer**
-      - Transformer is a type of neural network architecture that is particularly well suited for tasks that involve sequential data such as natural language processing. It uses self-attention mechanisms to allow the model to selectively focus on different parts of the input data, which allows it to learn to handle longer sequences of data and make more accurate predictions.
 
 
 --------------------------------------------------------------------------------------------

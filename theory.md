@@ -1,4 +1,6 @@
+Old Version Based on the notes taken by [GioBordi](https://github.com/Giobordi) 
 
+The new version is in Questions.md
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 ### Lezione 1
 ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -799,7 +801,7 @@ The goal here is to produce new data starting from the data we have. We want to 
  - **PixelRNN** : Here we use a RNN to model the distribution of the pixels, we start from the first pixel and then we predict the second one given the first one, then we predict the third one given the first two and so on. Each pixel depends implicitly on all the pixels above and left. The main problem here is that the RNN is really slow and we can't parallelize the computation.
  - **PixelCNN** : Rather than working with flat vectors, here we use 2D regions and spatial convolutions (like in CNN) to predict the nect pixel. To use that we need a special kernel for the convolution that defines which pixels will depends on. Training is faster than RNN but generation is still slow.
 
-In general autoregressive Models like PixelRNN and PixelCNN have the great con of being slow but on the other hand they can explicitly compute the likelihood, have good evaluation metrics and good samples.
+In general autoregressive Models like PixelRNN and PixelCNN have the great con of being slow but on the other hand they can **explicitly compute the likelihood**, have good evaluation metrics and good samples.
 
 ##### Variational Autoencoders
 Variational Autoencoders defines intractable density function with a latent $z$ like
